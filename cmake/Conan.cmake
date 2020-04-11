@@ -13,6 +13,7 @@ macro(run_conan)
             REQUIRES
             fmt/6.1.2
             spdlog/1.5.0
+            cpp-httplib/0.5.7
             BASIC_SETUP
             CMAKE_TARGETS # individual targets to link to
             BUILD
