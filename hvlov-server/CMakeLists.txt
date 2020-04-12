@@ -1,8 +1,8 @@
 add_executable(hvlov-server
         src/main.cpp
-        src/FileSystemListerService.cpp
-        src/FileSystemListerService.hpp
-        src/IFileSystemListerService.hpp
+        src/FileSystemLister.cpp
+        src/FileSystemLister.hpp
+        src/IFileSystemLister.hpp
         src/FileInfo.hpp)
 
 target_link_libraries(hvlov-server PRIVATE

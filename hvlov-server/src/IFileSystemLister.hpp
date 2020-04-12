@@ -10,7 +10,7 @@ namespace hvlov
     /*!
      * Interface used to list entries on the file system depending on some criteria.
      */
-    class IFileSystemListerService
+    class IFileSystemLister
     {
     public:
         /*!

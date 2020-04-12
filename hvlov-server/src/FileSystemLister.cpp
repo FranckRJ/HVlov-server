@@ -1,9 +1,9 @@
-#include "FileSystemListerService.hpp"
+#include "FileSystemLister.hpp"
 
 namespace hvlov
 {
     std::vector<FileInfo>
-    hvlov::FileSystemListerService::getEntriesFromDirectory(const std::filesystem::path& directoryPath)
+    hvlov::FileSystemLister::getEntriesFromDirectory(const std::filesystem::path& directoryPath)
     {
         std::vector<FileInfo> entries;
 

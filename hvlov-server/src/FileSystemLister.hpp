@@ -1,13 +1,13 @@
 #pragma once
 
-#include "IFileSystemListerService.hpp"
+#include "IFileSystemLister.hpp"
 
 namespace hvlov
 {
     /*!
      * Class used to list entries on the file system depending on some criteria.
      */
-    class FileSystemListerService : public IFileSystemListerService
+    class FileSystemLister : public IFileSystemLister
     {
     public:
         std::vector<FileInfo> getEntriesFromDirectory(const std::filesystem::path& directoryPath) override;
