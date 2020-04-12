@@ -1,26 +1,45 @@
 #include <fmt/core.h>
 #include <httplib.h>
+#include <memory>
 #include <spdlog/spdlog.h>
 
-#include "FileSystemListerService.hpp"
+#include "FileSystemLister.hpp"
 
 int main()
 {
+    const std::string serverAddress = "localhost";
+    constexpr int serverPort = 1234;
+
     spdlog::set_level(spdlog::level::level_enum::debug);
 
-    spdlog::debug("Hello, {}!", "World");
+    std::unique_ptr<hvlov::IFileSystemLister> fileSystemLister = std::make_unique<hvlov::FileSystemLister>();
 
     httplib::Server server;
 
-    for (auto&& entry : hvlov::FileSystemListerService{}.getEntriesFromDirectory("C:")) {
-        spdlog::info(entry.path.string());
-    }
+    server.Post("/", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string response;
+        std::vector<hvlov::FileInfo> entries;
 
-    spdlog::info("Hello, {}!", "World");
+        try
+        {
+            entries = fileSystemLister->getEntriesFromDirectory(req.body);
+        }
+        catch (const std::exception& e)
+        {
+            spdlog::error("Error while trying to get entries info of '{}' : {}.", req.body, e.what());
+            res.set_content(fmt::format("Error : {}", e.what()), "text/plain");
+            return;
+        }
 
-    server.Get("/", [](const httplib::Request&, httplib::Response& res) {
-        res.set_content(fmt::format("Hello, from {}\n", "{fmt}"), "text/plain");
+        for (auto&& entry : entries)
+        {
+            spdlog::debug(entry.path.string());
+            response += entry.path.string() + "\n";
+        }
+
+        res.set_content(response, "text/plain");
     });
 
-    server.listen("localhost", 1234);
+    spdlog::info("HVlov server start listening on {}:{}", serverAddress, serverPort);
+    server.listen(serverAddress.c_str(), serverPort);
 }
