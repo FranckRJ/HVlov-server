@@ -4,6 +4,7 @@
 # lable.md
 
 function(set_project_warnings project_name)
+    option(LOWER_EXTERNAL_HEADERS_WARNING "Lower the warning level for external headers" TRUE)
     option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 
     set(MSVC_WARNINGS
@@ -48,6 +49,10 @@ function(set_project_warnings project_name)
             -Wdouble-promotion # warn if float is implicit promoted to double
             -Wformat=2 # warn on security issues around functions that format output (ie printf)
             )
+
+    if (LOWER_EXTERNAL_HEADERS_WARNING)
+        set(MSVC_WARNINGS ${MSVC_WARNINGS} /experimental:external /external:anglebrackets /external:W2)
+    endif ()
 
     if (WARNINGS_AS_ERRORS)
         set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
