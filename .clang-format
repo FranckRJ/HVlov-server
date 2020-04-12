@@ -11,3 +11,5 @@ AllowShortFunctionsOnASingleLine: None
 AllowShortLoopsOnASingleLine: false
 IndentCaseLabels: true
 PointerAlignment: Left
+ReflowComments: false
+BreakStringLiterals: false
