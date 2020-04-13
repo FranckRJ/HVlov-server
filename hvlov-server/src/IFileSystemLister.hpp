@@ -20,6 +20,6 @@ namespace hvlov
          * @param directoryPath The directory from where to get the data.
          * @return A vector of FileInfo containing the entries information.
          */
-        virtual std::vector<FileInfo> getEntriesFromDirectory(const std::filesystem::path& directoryPath) = 0;
+        virtual std::vector<FileInfo> getEntriesFromDirectory(const std::filesystem::path& directoryPath) const = 0;
     };
 } // namespace hvlov

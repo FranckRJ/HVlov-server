@@ -10,6 +10,6 @@ namespace hvlov
     class FileSystemLister : public IFileSystemLister
     {
     public:
-        std::vector<FileInfo> getEntriesFromDirectory(const std::filesystem::path& directoryPath) override;
+        std::vector<FileInfo> getEntriesFromDirectory(const std::filesystem::path& directoryPath) const override;
     };
 } // namespace hvlov
