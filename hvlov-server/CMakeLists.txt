@@ -14,7 +14,8 @@ add_executable(hvlov-server
         src/ServerConnexionInfo.hpp
         src/IHvlovServer.hpp
         src/HvlovServer.cpp
-        src/HvlovServer.hpp)
+        src/HvlovServer.hpp
+        src/HttpResponse.hpp)
 
 target_link_libraries(hvlov-server PRIVATE
         project_options project_warnings

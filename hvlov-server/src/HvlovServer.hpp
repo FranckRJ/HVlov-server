@@ -3,7 +3,9 @@
 #include <filesystem>
 #include <httplib/httplib.h>
 #include <memory>
+#include <string_view>
 
+#include "HttpResponse.hpp"
 #include "IFileSystemLister.hpp"
 #include "IHvlovEntryBuilder.hpp"
 #include "IHvlovServer.hpp"
@@ -42,6 +44,16 @@ namespace hvlov
          * Initialize the request handlers of the server.
          */
         void initializeRequestHandlers();
+
+        /*!
+         * Handle a list request on the given path.
+         * Return an HTTP response with status 200 and an HTML list of HvlovEntries in case of success.
+         * Return an HTTP response with another status and a error message in case of error.
+         *
+         * @param path The path where to execute the list.
+         * @return The HTTP response of the request.
+         */
+        HttpResponse handleListRequest(std::string_view path);
 
     private:
         //! The underlying server.
