@@ -1,0 +1,58 @@
+#pragma once
+
+#include <filesystem>
+#include <httplib/httplib.h>
+#include <memory>
+
+#include "IFileSystemLister.hpp"
+#include "IHvlovEntryBuilder.hpp"
+#include "IHvlovServer.hpp"
+#include "ServerConnexionInfo.hpp"
+
+namespace hvlov
+{
+    class HvlovServer : public IHvlovServer
+    {
+    public:
+        /*!
+         * A configuration struct for an HvlovServer.
+         */
+        struct Config
+        {
+            //! The root directory where HvlovEntries will be retrieve.
+            std::filesystem::path root;
+            //! The data on what the server will listen (address + port).
+            ServerConnexionInfo connexionInfo;
+        };
+
+        /*!
+         * Construct an HvlovServer with a specific configuration and services.
+         *
+         * @param config The configuration to use.
+         * @param hvlovEntryBuilder The service used to build HvlovEntries.
+         * @param fileSystemLister The service used to retrieve info about files on filesystem.
+         */
+        explicit HvlovServer(Config config, std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
+                             std::unique_ptr<IFileSystemLister> fileSystemLister);
+
+        void run() override;
+
+    private:
+        /*!
+         * Initialize the request handlers of the server.
+         */
+        void initializeRequestHandlers();
+
+    private:
+        //! The underlying server.
+        httplib::Server _server;
+
+        //! The configuration of the server.
+        const Config _config;
+
+        //! The service used to build HvlovEntries.
+        const std::unique_ptr<IHvlovEntryBuilder> _hvlovEntryBuilder;
+        //! The service used to retrieve info about files on filesystem.
+        const std::unique_ptr<IFileSystemLister> _fileSystemLister;
+    };
+} // namespace hvlov

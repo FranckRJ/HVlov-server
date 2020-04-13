@@ -1,10 +1,9 @@
-#include <fmt/core.h>
-#include <httplib.h>
 #include <memory>
 #include <spdlog/spdlog.h>
 
 #include "FileSystemLister.hpp"
 #include "HvlovEntryBuilder.hpp"
+#include "HvlovServer.hpp"
 
 int main(int argc, char** argv)
 {
@@ -25,38 +24,9 @@ int main(int argc, char** argv)
     std::unique_ptr<hvlov::IHvlovEntryBuilder> hvlovEntryBuilder =
         std::make_unique<hvlov::HvlovEntryBuilder>(hvlovEntryBuilderConfig);
 
-    httplib::Server server;
+    hvlov::HvlovServer::Config hvlovServerConfig{serverRoot, {serverAddress, serverPort}};
+    std::unique_ptr<hvlov::IHvlovServer> hvlovServer = std::make_unique<hvlov::HvlovServer>(
+        hvlovServerConfig, std::move(hvlovEntryBuilder), std::move(fileSystemLister));
 
-    server.Post("/", [&](const httplib::Request& req, httplib::Response& res) {
-        std::string response;
-        std::vector<hvlov::HvlovEntry> entries;
-
-        spdlog::info("Request '{}' received.", req.body);
-
-        try
-        {
-            entries = hvlovEntryBuilder->buildEntriesFromFileInfos(fileSystemLister->getEntriesFromDirectory(req.body));
-        }
-        catch (const std::exception& e)
-        {
-            spdlog::error("Error while trying to get entries info of '{}' : {}.", req.body, e.what());
-            res.set_content(fmt::format("Error : {}", e.what()), "text/plain");
-            return;
-        }
-
-        for (auto&& entry : entries)
-        {
-            std::string result = fmt::format("<{0} url=\"{1}\">{2}</{0}>",
-                                             (entry.type == hvlov::HvlovEntry::Type::Folder ? "folder" : "video"),
-                                             entry.url.toString(), entry.title);
-
-            spdlog::debug(result);
-            response += result + "\n";
-        }
-
-        res.set_content(response, "text/plain");
-    });
-
-    spdlog::info("HVlov server start listening on {}:{} with '{}' as root", serverAddress, serverPort, serverRoot);
-    server.listen(serverAddress.c_str(), serverPort);
+    hvlovServer->run();
 }

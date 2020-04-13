@@ -10,7 +10,11 @@ add_executable(hvlov-server
         src/IHvlovEntryBuilder.hpp
         src/HvlovEntryBuilder.cpp
         src/HvlovEntryBuilder.hpp
-        src/BaseInterface.hpp)
+        src/BaseInterface.hpp
+        src/ServerConnexionInfo.hpp
+        src/IHvlovServer.hpp
+        src/HvlovServer.cpp
+        src/HvlovServer.hpp)
 
 target_link_libraries(hvlov-server PRIVATE
         project_options project_warnings
