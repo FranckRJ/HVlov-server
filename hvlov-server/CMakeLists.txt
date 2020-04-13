@@ -3,7 +3,8 @@ add_executable(hvlov-server
         src/FileSystemLister.cpp
         src/FileSystemLister.hpp
         src/IFileSystemLister.hpp
-        src/FileInfo.hpp)
+        src/FileInfo.hpp
+        src/BaseInterface.hpp)
 
 target_link_libraries(hvlov-server PRIVATE
         project_options project_warnings

@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <vector>
 
+#include "BaseInterface.hpp"
 #include "FileInfo.hpp"
 
 namespace hvlov
@@ -10,7 +11,7 @@ namespace hvlov
     /*!
      * Interface used to list entries on the file system depending on some criteria.
      */
-    class IFileSystemLister
+    class IFileSystemLister : public BaseInterface
     {
     public:
         /*!
