@@ -13,3 +13,6 @@ IndentCaseLabels: true
 PointerAlignment: Left
 ReflowComments: false
 BreakStringLiterals: false
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
