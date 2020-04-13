@@ -4,6 +4,12 @@ add_executable(hvlov-server
         src/FileSystemLister.hpp
         src/IFileSystemLister.hpp
         src/FileInfo.hpp
+        src/HvlovEntry.hpp
+        src/Url.hpp
+        src/Url.cpp
+        src/IHvlovEntryBuilder.hpp
+        src/HvlovEntryBuilder.cpp
+        src/HvlovEntryBuilder.hpp
         src/BaseInterface.hpp)
 
 target_link_libraries(hvlov-server PRIVATE
