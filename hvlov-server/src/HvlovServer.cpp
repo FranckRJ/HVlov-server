@@ -1,6 +1,7 @@
 #include "HvlovServer.hpp"
 
 #include <fmt/core.h>
+#include <httplib/httplib.h>
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 #include <utility>
@@ -12,6 +13,7 @@ namespace hvlov
         : _config{std::move(config)}
         , _hvlovEntryBuilder{std::move(hvlovEntryBuilder)}
         , _fileSystemLister{std::move(fileSystemLister)}
+        , _server{std::make_unique<httplib::Server>()}
     {
         if (!_hvlovEntryBuilder || !_fileSystemLister)
         {
@@ -25,12 +27,12 @@ namespace hvlov
     {
         spdlog::info("HVlov server start listening on {}:{} with '{}' as root.", _config.connexionInfo.address,
                      _config.connexionInfo.port, _config.root.string());
-        _server.listen(_config.connexionInfo.address.c_str(), _config.connexionInfo.port);
+        _server->listen(_config.connexionInfo.address.c_str(), _config.connexionInfo.port);
     }
 
     void HvlovServer::initializeRequestHandlers()
     {
-        _server.Get("/", [this](const httplib::Request& req, httplib::Response& res) {
+        _server->Get("/", [this](const httplib::Request& req, httplib::Response& res) {
             std::string path;
 
             if (req.has_param("path"))

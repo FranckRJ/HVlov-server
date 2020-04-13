@@ -1,7 +1,6 @@
 #pragma once
 
 #include <filesystem>
-#include <httplib/httplib.h>
 #include <memory>
 #include <string_view>
 
@@ -10,6 +9,12 @@
 #include "IHvlovEntryBuilder.hpp"
 #include "IHvlovServer.hpp"
 #include "ServerConnexionInfo.hpp"
+
+// Forward declaration
+namespace httplib
+{
+    class Server;
+}
 
 namespace hvlov
 {
@@ -56,9 +61,6 @@ namespace hvlov
         HttpResponse handleListRequest(std::string_view path);
 
     private:
-        //! The underlying server.
-        httplib::Server _server;
-
         //! The configuration of the server.
         const Config _config;
 
@@ -66,5 +68,8 @@ namespace hvlov
         const std::unique_ptr<IHvlovEntryBuilder> _hvlovEntryBuilder;
         //! The service used to retrieve info about files on filesystem.
         const std::unique_ptr<IFileSystemLister> _fileSystemLister;
+
+        //! The underlying server.
+        std::unique_ptr<httplib::Server> _server;
     };
 } // namespace hvlov
