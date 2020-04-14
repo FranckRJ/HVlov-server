@@ -7,6 +7,7 @@ function(set_project_warnings project_name)
     option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
 
     set(MSVC_WARNINGS
+            /permissive- # Follow the standard more strictly
             /W4 # Baseline reasonable warnings
             /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
             /w14254 # 'operator': conversion from 'type1:field_bits' to 'type2:field_bits', possible loss of data
@@ -25,7 +26,7 @@ function(set_project_warnings project_name)
             /w14555 # expression has no effect; expected expression with side- effect
             /w14619 # pragma warning: there is no warning number 'number'
             /w14640 # Enable warning on thread un-safe static member initialization
-            /w14826 # Conversion from 'type1' to 'type_2' is sign-extended. This may cause unexpected runtime behavior.
+            /w14826 # Conversion from 'type1' to 'type_2' is sign-extended. This may cause unexpected runtime behavior
             /w14905 # wide string literal cast to 'LPSTR'
             /w14906 # string literal cast to 'LPWSTR'
             /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
@@ -35,7 +36,7 @@ function(set_project_warnings project_name)
             -Wall
             -Wextra # reasonable and standard
             -Wshadow # warn the user if a variable declaration shadows one from a parent context
-            -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor.
+            -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor
             # This helps catch hard to track down memory errors
             -Wold-style-cast # warn for c-style casts
             -Wcast-align # warn for potential performance problem casts
