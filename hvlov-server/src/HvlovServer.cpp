@@ -2,6 +2,7 @@
 
 #include <fmt/core.h>
 #include <httplib/httplib.h>
+#include <nanorange.hpp>
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 #include <utility>
@@ -63,8 +64,7 @@ namespace hvlov
             return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
         }
 
-        if (std::any_of(listPath.begin(), listPath.end(),
-                        [](const auto& subPath) { return subPath == ".." || subPath == "."; }))
+        if (nano::any_of(listPath, [](const auto& subPath) { return subPath == ".." || subPath == "."; }))
         {
             std::string errorMessage =
                 fmt::format("Error: path '{}' contains dot or dot-dot file, which is invalid.", pathParam);

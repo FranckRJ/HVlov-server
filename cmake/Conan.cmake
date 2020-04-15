@@ -10,10 +10,12 @@ macro(run_conan)
     conan_add_remote(NAME bincrafters URL https://api.bintray.com/conan/bincrafters/public-conan)
 
     conan_cmake_run(
+            SETTINGS compiler.cppstd=17
             REQUIRES
             fmt/6.1.2
             spdlog/1.5.0
             cpp-httplib/0.5.7
+            nanorange/20191001
             BASIC_SETUP
             CMAKE_TARGETS # individual targets to link to
             BUILD

@@ -1,7 +1,7 @@
 #include "HvlovEntryBuilder.hpp"
 
-#include <algorithm>
 #include <functional>
+#include <nanorange.hpp>
 #include <numeric>
 #include <stdexcept>
 #include <utility>
@@ -17,8 +17,8 @@ namespace hvlov
         std::vector<HvlovEntry> hvlovEntries;
 
         hvlovEntries.reserve(fileInfos.size());
-        std::transform(fileInfos.cbegin(), fileInfos.cend(), std::back_inserter(hvlovEntries),
-                       [this](const auto& p) { return fileInfoToHvlovEntry(p); });
+        nano::transform(fileInfos, nano::begin(hvlovEntries),
+                        [this](const auto& p) { return fileInfoToHvlovEntry(p); });
 
         return hvlovEntries;
     }
@@ -45,7 +45,7 @@ namespace hvlov
 
         if (hvlovEntryType == HvlovEntry::Type::Folder)
         {
-            std::replace(hvlovEntryTitle.begin(), hvlovEntryTitle.end(), '_', ' ');
+            nano::replace(hvlovEntryTitle, '_', ' ');
         }
 
         return hvlovEntryTitle;
@@ -53,16 +53,15 @@ namespace hvlov
 
     Url HvlovEntryBuilder::extractHvlovEntryUrl(const FileInfo& fileInfo) const
     {
-        auto pathMismatchPair = std::mismatch(fileInfo.path.begin(), fileInfo.path.end(), _config.serverRoot.begin(),
-                                              _config.serverRoot.end());
+        auto [filePathMismatch, rootPathMismatch] = nano::mismatch(fileInfo.path, _config.serverRoot);
 
-        if (pathMismatchPair.second != _config.serverRoot.end() || pathMismatchPair.first == fileInfo.path.end())
+        if (rootPathMismatch != _config.serverRoot.end() || filePathMismatch == fileInfo.path.end())
         {
             throw std::runtime_error{"Entry not inside server root."};
         }
 
         std::filesystem::path entryPath =
-            std::accumulate(pathMismatchPair.first, fileInfo.path.end(), std::filesystem::path{}, std::divides{});
+            std::accumulate(filePathMismatch, fileInfo.path.end(), std::filesystem::path{}, std::divides{});
 
         return Url{entryPath.generic_string()};
     }

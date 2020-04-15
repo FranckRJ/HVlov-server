@@ -21,4 +21,5 @@ target_link_libraries(hvlov-server PRIVATE
         project_options project_warnings
         CONAN_PKG::fmt
         CONAN_PKG::spdlog
-        CONAN_PKG::cpp-httplib)
+        CONAN_PKG::cpp-httplib
+        CONAN_PKG::nanorange)
