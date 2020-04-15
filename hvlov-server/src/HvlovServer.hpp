@@ -51,14 +51,14 @@ namespace hvlov
         void initializeRequestHandlers();
 
         /*!
-         * Handle a list request on the given path.
+         * Handle a list request on the given path, relatively to the server root..
          * Return an HTTP response with status 200 and an HTML list of HvlovEntries in case of success.
          * Return an HTTP response with another status and a error message in case of error.
          *
-         * @param path The path where to execute the list.
+         * @param pathParam The path where to execute the list, relatively to the server root.
          * @return The HTTP response of the request.
          */
-        HttpResponse handleListRequest(std::string_view path);
+        HttpResponse handleListRequest(std::string_view pathParam);
 
     private:
         //! The configuration of the server.

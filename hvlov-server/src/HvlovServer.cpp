@@ -33,32 +33,58 @@ namespace hvlov
     void HvlovServer::initializeRequestHandlers()
     {
         _server->Get("/", [this](const httplib::Request& req, httplib::Response& res) {
-            std::string path;
+            std::string pathParam;
 
             if (req.has_param("path"))
             {
-                path = req.get_param_value("path");
+                pathParam = req.get_param_value("path");
             }
 
-            HttpResponse response = handleListRequest(path);
+            HttpResponse response = handleListRequest(pathParam);
 
             res.status = static_cast<int>(response.status);
             res.set_content(response.body, "text/plain");
         });
     }
 
-    HttpResponse HvlovServer::handleListRequest(std::string_view path)
+    HttpResponse HvlovServer::handleListRequest(std::string_view pathParam)
     {
-        spdlog::info("List request for '{}' received.", path);
+        spdlog::info("List request for '{}' received.", pathParam);
+
+        std::filesystem::path listPath = pathParam;
+        listPath.make_preferred();
+
+        // is_relative is not reliable because it could be relative to root (instead of relative to anything).
+        if (listPath.has_root_path())
+        {
+            std::string errorMessage = fmt::format("Error: path '{}' isn't relative.", pathParam);
+
+            spdlog::error(errorMessage);
+            return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
+        }
+
+        if (std::any_of(listPath.begin(), listPath.end(),
+                        [](const auto& subPath) { return subPath == ".." || subPath == "."; }))
+        {
+            std::string errorMessage =
+                fmt::format("Error: path '{}' contains dot or dot-dot file, which is invalid.", pathParam);
+
+            spdlog::error(errorMessage);
+            return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
+        }
+
+        listPath = _config.root / listPath;
+        spdlog::info("Absolute path '{}' used.", listPath.string());
 
         std::vector<hvlov::HvlovEntry> entries;
         try
         {
-            entries = _hvlovEntryBuilder->buildEntriesFromFileInfos(_fileSystemLister->getEntriesFromDirectory(path));
+            entries =
+                _hvlovEntryBuilder->buildEntriesFromFileInfos(_fileSystemLister->getEntriesFromDirectory(listPath));
         }
         catch (const std::exception& e)
         {
-            spdlog::error("Error while trying to get entries info of '{}' : {}.", path, e.what());
+            spdlog::error("Error while trying to get entries info of '{}' : {}.", pathParam, e.what());
             return HttpResponse{HttpResponse::Status::BadRequest, fmt::format("Error : {}", e.what())};
         }
 
@@ -73,7 +99,7 @@ namespace hvlov
             responseBody += result + "\n";
         }
 
-        spdlog::info("List request for '{}' succeed.", path);
+        spdlog::info("List request for '{}' succeed.", pathParam);
         return HttpResponse{HttpResponse::Status::Ok, responseBody};
     }
 } // namespace hvlov
