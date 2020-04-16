@@ -1,8 +1,9 @@
 [requires]
-fmt/6.2.0
-spdlog/1.5.0
+catch2/2.11.3
 cpp-httplib/0.5.8
+fmt/6.2.0
 nanorange/20191001
+spdlog/1.5.0
 
 [generators]
 cmake

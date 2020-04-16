@@ -25,6 +25,16 @@ namespace hvlov
         [[nodiscard]] std::string toString() const;
 
     private:
+        /*!
+         * Compare two Urls.
+         *
+         * @param lhs Left hand side of the comparison.
+         * @param rhs Right hand side of the comparison
+         * @return True if they are equals, false otherwise.
+         */
+        friend bool operator==(const Url& lhs, const Url& rhs);
+
+    private:
         //! The underlying string that store the URL.
         std::string _url;
     };

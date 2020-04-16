@@ -12,4 +12,9 @@ namespace hvlov
     {
         return _url;
     }
+
+    bool operator==(const Url& lhs, const Url& rhs)
+    {
+        return lhs._url == rhs._url;
+    }
 } // namespace hvlov

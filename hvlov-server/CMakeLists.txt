@@ -1,5 +1,4 @@
-add_executable(hvlov-server
-        src/main.cpp
+add_library(lib-hvlov-server STATIC
         src/FileSystemLister.cpp
         src/FileSystemLister.hpp
         src/IFileSystemLister.hpp
@@ -17,9 +16,18 @@ add_executable(hvlov-server
         src/HvlovServer.hpp
         src/HttpResponse.hpp)
 
-target_link_libraries(hvlov-server PRIVATE
+target_link_libraries(lib-hvlov-server PRIVATE
         project_options project_warnings
         CONAN_PKG::fmt
         CONAN_PKG::spdlog
         CONAN_PKG::cpp-httplib
         CONAN_PKG::nanorange)
+
+target_include_directories(lib-hvlov-server PUBLIC src/)
+
+add_executable(hvlov-server src/main.cpp)
+
+target_link_libraries(hvlov-server PRIVATE
+        project_options project_warnings
+        lib-hvlov-server
+        CONAN_PKG::spdlog)
