@@ -26,9 +26,9 @@ namespace hvlov
 
     void HvlovServer::run()
     {
-        spdlog::info("HVlov server start listening on {}:{} with '{}' as root.", _config.connexionInfo.address,
-                     _config.connexionInfo.port, _config.root.string());
-        _server->listen(_config.connexionInfo.address.c_str(), _config.connexionInfo.port);
+        spdlog::info("HVlov server start listening on {}:{} with '{}' as root.", _config.connectionInfo.address,
+                     _config.connectionInfo.port, _config.root.string());
+        _server->listen(_config.connectionInfo.address.c_str(), _config.connectionInfo.port);
     }
 
     void HvlovServer::initializeRequestHandlers()

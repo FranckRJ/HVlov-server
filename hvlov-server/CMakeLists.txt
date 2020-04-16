@@ -11,7 +11,7 @@ add_executable(hvlov-server
         src/HvlovEntryBuilder.cpp
         src/HvlovEntryBuilder.hpp
         src/BaseInterface.hpp
-        src/ServerConnexionInfo.hpp
+        src/ServerConnectionInfo.hpp
         src/IHvlovServer.hpp
         src/HvlovServer.cpp
         src/HvlovServer.hpp

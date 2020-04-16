@@ -7,7 +7,7 @@ namespace hvlov
     /*!
      * Struct holding information to connect to a server.
      */
-    struct ServerConnexionInfo
+    struct ServerConnectionInfo
     {
         //! The address on which the server listen.
         std::string address;

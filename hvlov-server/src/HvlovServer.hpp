@@ -8,7 +8,7 @@
 #include "IFileSystemLister.hpp"
 #include "IHvlovEntryBuilder.hpp"
 #include "IHvlovServer.hpp"
-#include "ServerConnexionInfo.hpp"
+#include "ServerConnectionInfo.hpp"
 
 // Forward declaration
 namespace httplib
@@ -29,7 +29,7 @@ namespace hvlov
             //! The root directory where HvlovEntries will be retrieve.
             std::filesystem::path root;
             //! The data on what the server will listen (address + port).
-            ServerConnexionInfo connexionInfo;
+            ServerConnectionInfo connectionInfo;
         };
 
         /*!
