@@ -1,7 +1,7 @@
 [requires]
-fmt/6.1.2
+fmt/6.2.0
 spdlog/1.5.0
-cpp-httplib/0.5.7
+cpp-httplib/0.5.8
 nanorange/20191001
 
 [generators]
