@@ -17,7 +17,7 @@ namespace hvlov
         std::vector<HvlovEntry> hvlovEntries;
 
         hvlovEntries.reserve(fileInfos.size());
-        nano::transform(fileInfos, nano::begin(hvlovEntries),
+        nano::transform(fileInfos, nano::back_inserter(hvlovEntries),
                         [this](const auto& p) { return fileInfoToHvlovEntry(p); });
 
         return hvlovEntries;
