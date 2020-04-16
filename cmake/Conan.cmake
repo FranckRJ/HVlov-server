@@ -1,4 +1,4 @@
-macro(run_conan)
+function(run_conan)
     # Download automatically, you can also just copy the conan.cmake file
     if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
         message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
@@ -20,4 +20,4 @@ macro(run_conan)
             CMAKE_TARGETS # individual targets to link to
             BUILD
             missing)
-endmacro()
+endfunction()

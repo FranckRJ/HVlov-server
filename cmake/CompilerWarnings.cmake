@@ -3,8 +3,8 @@
 # https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 
 function(set_project_warnings project_name)
-    option(LOWER_EXTERNAL_HEADERS_WARNING "Lower the warning level for external headers" TRUE)
-    option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
+    option(LOWER_EXTERNAL_HEADERS_WARNING "Lower the warning level for external headers" ON)
+    option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" ON)
 
     set(MSVC_WARNINGS
             /permissive- # Follow the standard more strictly
