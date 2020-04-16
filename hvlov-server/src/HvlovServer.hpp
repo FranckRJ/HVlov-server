@@ -42,6 +42,8 @@ namespace hvlov
         explicit HvlovServer(Config config, std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
                              std::unique_ptr<IFileSystemLister> fileSystemLister);
 
+        ~HvlovServer() override;
+
         void run() override;
 
     private:

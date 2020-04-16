@@ -1,3 +1,5 @@
+#define NANORANGE_NO_STD_FORWARD_DECLARATIONS
+
 #include "HvlovEntryBuilder.hpp"
 
 #include <functional>

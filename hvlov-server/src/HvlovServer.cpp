@@ -1,3 +1,5 @@
+#define NANORANGE_NO_STD_FORWARD_DECLARATIONS
+
 #include "HvlovServer.hpp"
 
 #include <fmt/core.h>
@@ -23,6 +25,8 @@ namespace hvlov
 
         initializeRequestHandlers();
     }
+
+    HvlovServer::~HvlovServer() = default;
 
     void HvlovServer::run()
     {
