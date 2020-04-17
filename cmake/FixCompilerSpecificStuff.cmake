@@ -8,3 +8,6 @@ if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8 AND CMAKE_CXX_COMPILER_VE
     target_link_libraries(project_global_options INTERFACE stdc++fs)
     message(STATUS "Added stdc++fs library because GCC 8 was detected.")
 endif ()
+
+# Used to prevent nanorange from forwarding std declarations, which is UB and cause errors on GCC
+target_compile_definitions(project_global_options INTERFACE NANORANGE_NO_STD_FORWARD_DECLARATIONS)
