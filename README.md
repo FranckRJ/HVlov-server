@@ -10,4 +10,4 @@ Serveur pour HVlov.
 Testé sur :
 - Windows / MSVC 2019.  
 - Linux / GCC 9.  
-- MacOs / Clang 9.  
+- MacOs / AppleClang (version ?).  
