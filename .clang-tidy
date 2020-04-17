@@ -2,6 +2,6 @@
 Checks:            '*,-abseil-*,-android-*,-fuchsia-*,-google-*,-llvm-*,-objc-*,-zircon-*,
                     -readability-convert-member-functions-to-static,-readability-redundant-access-specifiers,
                     -modernize-use-nodiscard,-modernize-use-trailing-return-type'
-WarningsAsErrors:  '1'
+WarningsAsErrors:  '*'
 HeaderFilterRegex: ''
 FormatStyle:       none
