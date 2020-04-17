@@ -9,7 +9,6 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: build
 
 jobs:
   build:
@@ -26,12 +25,16 @@ jobs:
           pip install conan
       - name: Generate build files
         run: |
+          mkdir build
+          cd build
           cmake .. -DENABLE_COVERAGE=ON
       - name: Build project
         run: |
+          cd build
           cmake --build .
       - name: Run tests
         run: |
+          cd build
           ctest
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
