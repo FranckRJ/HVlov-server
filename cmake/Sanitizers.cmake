@@ -1,5 +1,5 @@
 function(enable_sanitizers project_name)
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
         option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" OFF)
 
         if (ENABLE_COVERAGE)
