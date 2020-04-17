@@ -7,7 +7,8 @@ endif ()
 
 add_executable(test-hvlov-server
         src/main.cpp
-        src/TestHvlovEntryBuilder.cpp)
+        src/TestHvlovEntryBuilder.cpp
+        src/TestUrl.cpp)
 
 target_link_libraries(test-hvlov-server PRIVATE
         project_test_options project_warnings
