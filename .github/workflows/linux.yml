@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_C_COMPILER=gcc-9 -DCMAKE_CXX_COMPILER=g++-9 -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON
+          cmake .. -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON
       - name: Build project
         run: |
           cd build
@@ -41,4 +41,4 @@ jobs:
           ctest --output-on-failure --build-config Debug
       - name: Upload coverage to Codecov
         run: |
-          bash <(curl -s https://codecov.io/bash) -x gcov-9 || echo "Codecov did not collect coverage reports"
+          bash <(curl -s https://codecov.io/bash) -x gcov-8 || echo "Codecov did not collect coverage reports"
