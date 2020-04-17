@@ -17,4 +17,9 @@ namespace hvlov
     {
         return lhs._url == rhs._url;
     }
+
+    bool operator!=(const Url& lhs, const Url& rhs)
+    {
+        return !(lhs == rhs);
+    }
 } // namespace hvlov
