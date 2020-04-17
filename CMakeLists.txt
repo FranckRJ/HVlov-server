@@ -1,23 +1,36 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(HVlov-server CXX)
-include(cmake/SetupGlobalCMakeFlags.cmake)
+
+# Set C++ standard requirements
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 include(cmake/StandardProjectSettings.cmake)
 
-# Link this 'library' to set the c++ standard / compile-time options requested
-add_library(project_options INTERFACE)
-target_compile_features(project_options INTERFACE cxx_std_17)
+# Link these 'library' to set the c++ standard / compile-time options requested
+add_library(project_global_options INTERFACE)
+add_library(project_exe_options INTERFACE)
+add_library(project_test_options INTERFACE)
 
 # Link this 'library' to use the warnings specified in CompilerWarnings.cmake
 add_library(project_warnings INTERFACE)
 
-# standard compiler warnings
+include(cmake/FixCompilerSpecificStuff.cmake)
+
+# Setup base compiler options
+target_compile_features(project_global_options INTERFACE cxx_std_17)
+target_link_libraries(project_exe_options INTERFACE project_global_options)
+target_link_libraries(project_test_options INTERFACE project_global_options)
+
+# Setup compiler warnings
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
 # sanitizer options if supported by compiler
 include(cmake/Sanitizers.cmake)
-enable_sanitizers(project_options)
+enable_sanitizers(project_exe_options)
 
 # allow for static analysis options
 include(cmake/StaticAnalyzers.cmake)

@@ -17,7 +17,7 @@ add_library(lib-hvlov-server STATIC
         src/HttpResponse.hpp)
 
 target_link_libraries(lib-hvlov-server PRIVATE
-        project_options project_warnings
+        project_exe_options project_warnings
         CONAN_PKG::fmt
         CONAN_PKG::spdlog
         CONAN_PKG::cpp-httplib
@@ -28,6 +28,6 @@ target_include_directories(lib-hvlov-server PUBLIC src/)
 add_executable(hvlov-server src/main.cpp)
 
 target_link_libraries(hvlov-server PRIVATE
-        project_options project_warnings
+        project_exe_options project_warnings
         lib-hvlov-server
         CONAN_PKG::spdlog)

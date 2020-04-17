@@ -10,7 +10,7 @@ add_executable(test-hvlov-server
         src/TestHvlovEntryBuilder.cpp)
 
 target_link_libraries(test-hvlov-server PRIVATE
-        project_warnings
+        project_test_options project_warnings
         lib-hvlov-server
         CONAN_PKG::catch2)
 
