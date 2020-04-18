@@ -15,8 +15,4 @@ target_link_libraries(test-hvlov-server PRIVATE
         lib-hvlov-server
         CONAN_PKG::catch2)
 
-catch_discover_tests(test-hvlov-server
-        EXTRA_ARGS
-        -s
-        --reporter=xml
-        --out=tests.xml)
+catch_discover_tests(test-hvlov-server)
