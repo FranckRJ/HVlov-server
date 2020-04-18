@@ -8,6 +8,6 @@
 Serveur pour HVlov.  
 
 Testé sur :
-- Windows / MSVC 2019.  
-- Linux / GCC 8.  
-- MacOs / AppleClang (version ?).  
+- Windows : MSVC 2019.  
+- Linux : GCC 8 / Clang 8.  
+- MacOs : AppleClang (version ?).  
