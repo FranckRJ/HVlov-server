@@ -15,7 +15,7 @@ defaults:
 
 jobs:
   build-gcc:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Setup python
@@ -43,7 +43,7 @@ jobs:
         run: |
           bash <(curl -s https://codecov.io/bash) -x gcov-8 || echo "Codecov did not collect coverage reports"
   build-clang:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Setup python
