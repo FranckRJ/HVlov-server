@@ -3,6 +3,7 @@
 #include <spdlog/spdlog.h>
 
 #include "FileSystemLister.hpp"
+#include "HttpServerWrapper.hpp"
 #include "HvlovEntryBuilder.hpp"
 #include "HvlovServer.hpp"
 
@@ -24,10 +25,11 @@ int main(int argc, char** argv)
     hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{serverRoot};
     std::unique_ptr<hvlov::IHvlovEntryBuilder> hvlovEntryBuilder =
         std::make_unique<hvlov::HvlovEntryBuilder>(hvlovEntryBuilderConfig);
+    std::unique_ptr<hvlov::IHttpServerWrapper> httpServerWrapper = std::make_unique<hvlov::HttpServerWrapper>();
 
     hvlov::HvlovServer::Config hvlovServerConfig{serverRoot, {serverAddress, serverPort}};
     std::unique_ptr<hvlov::IHvlovServer> hvlovServer = std::make_unique<hvlov::HvlovServer>(
-        hvlovServerConfig, std::move(hvlovEntryBuilder), std::move(fileSystemLister));
+        hvlovServerConfig, std::move(httpServerWrapper), std::move(hvlovEntryBuilder), std::move(fileSystemLister));
 
     hvlovServer->run();
 }

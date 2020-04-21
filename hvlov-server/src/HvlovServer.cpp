@@ -10,12 +10,13 @@
 
 namespace hvlov
 {
-    HvlovServer::HvlovServer(HvlovServer::Config config, std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
+    HvlovServer::HvlovServer(HvlovServer::Config config, std::unique_ptr<IHttpServerWrapper> serverWrapper,
+                             std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
                              std::unique_ptr<IFileSystemLister> fileSystemLister)
         : _config{std::move(config)}
+        , _serverWrapper{std::move(serverWrapper)}
         , _hvlovEntryBuilder{std::move(hvlovEntryBuilder)}
         , _fileSystemLister{std::move(fileSystemLister)}
-        , _server{std::make_unique<httplib::Server>()}
     {
         if (!_hvlovEntryBuilder || !_fileSystemLister)
         {
@@ -25,29 +26,24 @@ namespace hvlov
         initializeRequestHandlers();
     }
 
-    HvlovServer::~HvlovServer() = default;
-
     void HvlovServer::run()
     {
         spdlog::info("HVlov server start listening on {}:{} with '{}' as root.", _config.connectionInfo.address,
                      _config.connectionInfo.port, _config.root.string());
-        _server->listen(_config.connectionInfo.address.c_str(), _config.connectionInfo.port);
+        _serverWrapper->listen(_config.connectionInfo.address, _config.connectionInfo.port);
     }
 
     void HvlovServer::initializeRequestHandlers()
     {
-        _server->Get("/", [this](const httplib::Request& req, httplib::Response& res) {
+        _serverWrapper->registerGet("/", [this](const HttpRequest& req) {
             std::string pathParam;
 
-            if (req.has_param("path"))
+            if (auto pathIte = req.params.find("path"); pathIte != req.params.end())
             {
-                pathParam = req.get_param_value("path");
+                pathParam = pathIte->second;
             }
 
-            HttpResponse response = handleListRequest(pathParam);
-
-            res.status = static_cast<int>(response.status);
-            res.set_content(response.body, "text/plain");
+            return handleListRequest(pathParam);
         });
     }
 

@@ -6,15 +6,10 @@
 
 #include "HttpResponse.hpp"
 #include "IFileSystemLister.hpp"
+#include "IHttpServerWrapper.hpp"
 #include "IHvlovEntryBuilder.hpp"
 #include "IHvlovServer.hpp"
 #include "ServerConnectionInfo.hpp"
-
-// Forward declaration
-namespace httplib
-{
-    class Server;
-}
 
 namespace hvlov
 {
@@ -36,13 +31,13 @@ namespace hvlov
          * Construct an HvlovServer with a specific configuration and services.
          *
          * @param config The configuration to use.
+         * @param serverWrapper The server wrapper to use.
          * @param hvlovEntryBuilder The service used to build HvlovEntries.
          * @param fileSystemLister The service used to retrieve info about files on filesystem.
          */
-        explicit HvlovServer(Config config, std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
+        explicit HvlovServer(Config config, std::unique_ptr<IHttpServerWrapper> serverWrapper,
+                             std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
                              std::unique_ptr<IFileSystemLister> fileSystemLister);
-
-        ~HvlovServer() override;
 
         void run() override;
 
@@ -66,12 +61,11 @@ namespace hvlov
         //! The configuration of the server.
         const Config _config;
 
+        //! The underlying server.
+        const std::unique_ptr<IHttpServerWrapper> _serverWrapper;
         //! The service used to build HvlovEntries.
         const std::unique_ptr<IHvlovEntryBuilder> _hvlovEntryBuilder;
         //! The service used to retrieve info about files on filesystem.
         const std::unique_ptr<IFileSystemLister> _fileSystemLister;
-
-        //! The underlying server.
-        std::unique_ptr<httplib::Server> _server;
     };
 } // namespace hvlov
