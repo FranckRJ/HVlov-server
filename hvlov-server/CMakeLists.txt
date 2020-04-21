@@ -18,7 +18,10 @@ add_library(lib-hvlov-server STATIC
         src/IHttpServerWrapper.hpp
         src/HttpServerWrapper.cpp
         src/HttpServerWrapper.hpp
-        src/HttpRequest.hpp)
+        src/HttpRequest.hpp
+        src/IHvlovEntryFormatter.hpp
+        src/HvlovEntryFormatter.cpp
+        src/HvlovEntryFormatter.hpp)
 
 target_link_libraries(lib-hvlov-server PRIVATE
         project_exe_options project_warnings

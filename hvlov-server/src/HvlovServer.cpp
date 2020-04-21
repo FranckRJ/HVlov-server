@@ -11,14 +11,16 @@
 namespace hvlov
 {
     HvlovServer::HvlovServer(HvlovServer::Config config, std::unique_ptr<IHttpServerWrapper> serverWrapper,
+                             std::unique_ptr<IHvlovEntryFormatter> hvlovEntryFormatter,
                              std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
                              std::unique_ptr<IFileSystemLister> fileSystemLister)
         : _config{std::move(config)}
         , _serverWrapper{std::move(serverWrapper)}
+        , _hvlovEntryFormatter{std::move(hvlovEntryFormatter)}
         , _hvlovEntryBuilder{std::move(hvlovEntryBuilder)}
         , _fileSystemLister{std::move(fileSystemLister)}
     {
-        if (!_hvlovEntryBuilder || !_fileSystemLister)
+        if (!_serverWrapper || !_hvlovEntryFormatter || !_hvlovEntryBuilder || !_fileSystemLister)
         {
             throw std::invalid_argument{"HvlovServer cannot be initialized with null parameters."};
         }
@@ -75,14 +77,10 @@ namespace hvlov
         }
 
         std::string responseBody;
-        for (const auto& entry : entries)
+        for (const auto& formattedEntry : _hvlovEntryFormatter->formatEntriesToHtml(entries))
         {
-            std::string result =
-                fmt::format("<{0} url=\"{1}\">{2}</{0}>", (entry.type == HvlovEntry::Type::Folder ? "folder" : "video"),
-                            entry.url.toString(), entry.title);
-
-            spdlog::debug(result);
-            responseBody += result + "\n";
+            spdlog::debug(formattedEntry);
+            responseBody += formattedEntry + "\n";
         }
 
         spdlog::info("List request for '{}' succeed.", pathParam);
