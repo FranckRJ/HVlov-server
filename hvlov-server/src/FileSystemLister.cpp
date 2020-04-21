@@ -2,8 +2,7 @@
 
 namespace hvlov
 {
-    std::vector<FileInfo>
-    hvlov::FileSystemLister::getEntriesFromDirectory(const std::filesystem::path& directoryPath) const
+    std::vector<FileInfo> FileSystemLister::getEntriesFromDirectory(const std::filesystem::path& directoryPath) const
     {
         std::vector<FileInfo> entries;
 

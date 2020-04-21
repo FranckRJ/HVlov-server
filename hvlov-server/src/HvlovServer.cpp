@@ -79,7 +79,7 @@ namespace hvlov
         listPath = _config.root / listPath;
         spdlog::info("Absolute path '{}' used.", listPath.string());
 
-        std::vector<hvlov::HvlovEntry> entries;
+        std::vector<HvlovEntry> entries;
         try
         {
             entries =
@@ -94,9 +94,9 @@ namespace hvlov
         std::string responseBody;
         for (const auto& entry : entries)
         {
-            std::string result = fmt::format("<{0} url=\"{1}\">{2}</{0}>",
-                                             (entry.type == hvlov::HvlovEntry::Type::Folder ? "folder" : "video"),
-                                             entry.url.toString(), entry.title);
+            std::string result =
+                fmt::format("<{0} url=\"{1}\">{2}</{0}>", (entry.type == HvlovEntry::Type::Folder ? "folder" : "video"),
+                            entry.url.toString(), entry.title);
 
             spdlog::debug(result);
             responseBody += result + "\n";
