@@ -1,10 +1,11 @@
 #include "HvlovEntryBuilder.hpp"
 
 #include <functional>
-#include <nanorange.hpp>
 #include <numeric>
 #include <stdexcept>
 #include <utility>
+
+#include <nanorange.hpp>
 
 namespace hvlov
 {

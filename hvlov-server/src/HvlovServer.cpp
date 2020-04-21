@@ -1,11 +1,12 @@
 #include "HvlovServer.hpp"
 
+#include <stdexcept>
+#include <utility>
+
 #include <fmt/core.h>
 #include <httplib/httplib.h>
 #include <nanorange.hpp>
 #include <spdlog/spdlog.h>
-#include <stdexcept>
-#include <utility>
 
 namespace hvlov
 {
