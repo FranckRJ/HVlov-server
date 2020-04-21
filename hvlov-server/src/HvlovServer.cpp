@@ -54,22 +54,9 @@ namespace hvlov
         std::filesystem::path listPath = pathParam;
         listPath.make_preferred();
 
-        // is_relative is not reliable because it could be relative to root (instead of relative to anything).
-        if (listPath.has_root_path())
+        if (auto optionalError = checkPathForRequest(listPath); optionalError.has_value())
         {
-            std::string errorMessage = fmt::format("Error: path '{}' isn't relative.", pathParam);
-
-            spdlog::error(errorMessage);
-            return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
-        }
-
-        if (nano::any_of(listPath, [](const auto& subPath) { return subPath == ".." || subPath == "."; }))
-        {
-            std::string errorMessage =
-                fmt::format("Error: path '{}' contains dot or dot-dot file, which is invalid.", pathParam);
-
-            spdlog::error(errorMessage);
-            return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
+            return *optionalError;
         }
 
         listPath = _config.root / listPath;
@@ -100,5 +87,28 @@ namespace hvlov
 
         spdlog::info("List request for '{}' succeed.", pathParam);
         return HttpResponse{HttpResponse::Status::Ok, responseBody};
+    }
+
+    std::optional<HttpResponse> HvlovServer::checkPathForRequest(const std::filesystem::path& path)
+    {
+        // is_relative is not reliable because it could be relative to root (instead of relative to anything).
+        if (path.has_root_path())
+        {
+            std::string errorMessage = fmt::format("Error: path '{}' isn't relative.", path.generic_string());
+
+            spdlog::error(errorMessage);
+            return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
+        }
+
+        if (nano::any_of(path, [](const auto& subPath) { return subPath == ".." || subPath == "."; }))
+        {
+            std::string errorMessage =
+                fmt::format("Error: path '{}' contains dot or dot-dot file, which is invalid.", path.generic_string());
+
+            spdlog::error(errorMessage);
+            return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
+        }
+
+        return std::nullopt;
     }
 } // namespace hvlov

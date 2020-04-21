@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <memory>
+#include <optional>
 #include <string_view>
 
 #include "HttpResponse.hpp"
@@ -56,6 +57,15 @@ namespace hvlov
          * @return The HTTP response of the request.
          */
         HttpResponse handleListRequest(std::string_view pathParam);
+
+        /*!
+         * Check if the given path is a valid path for a request.
+         * A valid path is a relative path that doesn't contain any dot or dot-dot files.
+         *
+         * @param path The path to check.
+         * @return An empty optional in case of success, an HttpResponse containing the error in case of error.
+         */
+        std::optional<HttpResponse> checkPathForRequest(const std::filesystem::path& path);
 
     private:
         //! The configuration of the server.
