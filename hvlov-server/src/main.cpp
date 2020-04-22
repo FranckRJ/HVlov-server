@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     constexpr int serverPort = 47107;
 
     std::unique_ptr<hvlov::IFileSystemLister> fileSystemLister = std::make_unique<hvlov::FileSystemLister>();
-    hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{serverRoot};
+    hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{serverRoot, serverBase};
     std::unique_ptr<hvlov::IHvlovEntryBuilder> hvlovEntryBuilder =
         std::make_unique<hvlov::HvlovEntryBuilder>(hvlovEntryBuilderConfig);
     std::unique_ptr<hvlov::IHvlovEntryFormatter> hvlovEntryFormatter = std::make_unique<hvlov::HvlovEntryFormatter>();

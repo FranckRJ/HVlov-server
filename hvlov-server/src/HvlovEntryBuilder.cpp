@@ -30,7 +30,7 @@ namespace hvlov
     {
         HvlovEntry::Type hvlovEntryType = extractHvlovEntryType(fileInfo);
         std::string hvlovEntryTitle = extractHvlovEntryTitle(fileInfo, hvlovEntryType);
-        Url hvlovEntryUrl = extractHvlovEntryUrl(fileInfo);
+        Url hvlovEntryUrl = extractHvlovEntryUrl(fileInfo, hvlovEntryType);
 
         return HvlovEntry{hvlovEntryTitle, hvlovEntryUrl, hvlovEntryType};
     }
@@ -54,11 +54,16 @@ namespace hvlov
         return hvlovEntryTitle;
     }
 
-    Url HvlovEntryBuilder::extractHvlovEntryUrl(const FileInfo& fileInfo) const
+    Url HvlovEntryBuilder::extractHvlovEntryUrl(const FileInfo& fileInfo, HvlovEntry::Type hvlovEntryType) const
     {
-        auto [filePathMismatch, rootPathMismatch] = nano::mismatch(fileInfo.path, _config.serverRoot);
+        std::filesystem::path relativeRoot =
+            (hvlovEntryType == HvlovEntry::Type::Video || _config.serverRelativeBase.empty()
+                 ? _config.serverRoot
+                 : _config.serverRoot / _config.serverRelativeBase);
 
-        if (rootPathMismatch != _config.serverRoot.end() || filePathMismatch == fileInfo.path.end())
+        auto [filePathMismatch, rootPathMismatch] = nano::mismatch(fileInfo.path, relativeRoot);
+
+        if (rootPathMismatch != relativeRoot.end() || filePathMismatch == fileInfo.path.end())
         {
             throw std::runtime_error{"Entry not inside server root."};
         }

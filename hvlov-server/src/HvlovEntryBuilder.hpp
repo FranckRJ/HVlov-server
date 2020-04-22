@@ -17,8 +17,10 @@ namespace hvlov
          */
         struct Config
         {
-            //! The path of the root of the server. HvlovEntries will be built relatively to it.
+            //! The path of the root of the server. Video entries are built relatively to it.
             std::filesystem::path serverRoot;
+            //! The base directory relative to root. Folder entries are built relatively to it.
+            std::filesystem::path serverRelativeBase;
         };
 
         /*!
@@ -58,12 +60,14 @@ namespace hvlov
         std::string extractHvlovEntryTitle(const FileInfo& fileInfo, HvlovEntry::Type hvlovEntryType) const;
 
         /*!
-         * Extract the HvlovEntry URL from the parameter. It will be relative to the server root.
+         * Extract the HvlovEntry URL from the parameter. It will be relative to the server root or base
+         * depending on the type of entry.
          *
          * @param fileInfo The FileInfo used to extract the Url information.
+         * @param hvlovEntryType The entry type used to chose which modification to do on the title.
          * @return The extracted Url information.
          */
-        Url extractHvlovEntryUrl(const FileInfo& fileInfo) const;
+        Url extractHvlovEntryUrl(const FileInfo& fileInfo, HvlovEntry::Type hvlovEntryType) const;
 
     private:
         //! The configuration of the HvlovEntryBuilder.
