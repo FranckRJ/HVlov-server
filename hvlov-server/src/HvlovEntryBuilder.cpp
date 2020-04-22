@@ -21,6 +21,8 @@ namespace hvlov
         nano::transform(fileInfos, nano::back_inserter(hvlovEntries),
                         [this](const auto& p) { return fileInfoToHvlovEntry(p); });
 
+        nano::sort(hvlovEntries);
+
         return hvlovEntries;
     }
 

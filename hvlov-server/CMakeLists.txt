@@ -21,7 +21,8 @@ add_library(lib-hvlov-server STATIC
         src/HttpRequest.hpp
         src/IHvlovEntryFormatter.hpp
         src/HvlovEntryFormatter.cpp
-        src/HvlovEntryFormatter.hpp)
+        src/HvlovEntryFormatter.hpp
+        src/HvlovEntry.cpp)
 
 target_link_libraries(lib-hvlov-server PRIVATE
         project_exe_options project_warnings

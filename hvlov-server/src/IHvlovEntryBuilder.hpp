@@ -15,7 +15,7 @@ namespace hvlov
     {
     public:
         /*!
-         * Build a vector of HvlovEntries from a vector of FileInfos.
+         * Build a vector of HvlovEntries from a vector of FileInfos. The order and size may not be the same.
          *
          * @param fileInfos The FileInfos that will be used to build the HvlovEntries.
          * @return The list of built HvlovEntries.
