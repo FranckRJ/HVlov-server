@@ -1,37 +1,105 @@
-#include <catch2/catch.hpp>
-
 #include <filesystem>
+
+#include <catch2/catch.hpp>
+#include <nanorange.hpp>
 
 #include "HvlovEntryBuilder.hpp"
 
 using namespace hvlov;
 namespace fs = std::filesystem;
 
+namespace
+{
+    const fs::path serverRoot = fs::path{"server"} / "root";
+    const std::string directory1 = "folder1";
+    const std::string directory2 = "folder2";
+    const std::string underscoredDirectory1 = "folder_1";
+    const std::string spacedDirectory1 = "folder 1";
+    const std::string file1 = "video1.mp4";
+    const std::string file2 = "video2.mp4";
+    const std::string underscoredFile1 = "video_1.mp4";
+
+    FileInfo createFileInfo(const fs::path& relativePath, fs::file_type type)
+    {
+        return FileInfo{serverRoot / relativePath, fs::file_status{type}};
+    }
+
+    HvlovEntry createHvlovEntry(const std::string& fileDirectory, const std::string& fileName, HvlovEntry::Type type)
+    {
+        return HvlovEntry{fileName, Url{fileDirectory + "/" + fileName}, type};
+    }
+
+    bool entriesEquals(const HvlovEntry& lhs, const HvlovEntry& rhs)
+    {
+        return (lhs.title == rhs.title && lhs.url == rhs.url && lhs.type == rhs.type);
+    }
+} // namespace
+
 SCENARIO("HvlovEntryBuilder::buildEntriesFromFileInfos()", "[unit]")
 {
     GIVEN("A constructed HvlovEntryBuilder with a valid configuration")
     {
-        fs::path serverRoot = fs::path{"server"} / "root";
         HvlovEntryBuilder::Config config{serverRoot};
         HvlovEntryBuilder hvlovEntryBuilder{config};
 
         WHEN("A valid FileInfo for a video entry is passed as argument")
         {
-            std::string fileDirectory = "folder";
-            std::string fileName = "video.mp4";
-            FileInfo videoEntryFileInfo{serverRoot / fileDirectory / fileName, fs::file_status{fs::file_type::regular}};
+            FileInfo videoEntryFileInfo = createFileInfo(fs::path(directory1) / file1, fs::file_type::regular);
             std::vector<FileInfo> fileInfos{videoEntryFileInfo};
 
             THEN("The corresponding HvlovEntry is returned")
             {
-                HvlovEntry videoEntryHvlovEntry{fileName, Url{fileDirectory + "/" + fileName}, HvlovEntry::Type::Video};
+                HvlovEntry videoEntryHvlovEntry = createHvlovEntry(directory1, file1, HvlovEntry::Type::Video);
 
+                std::vector<HvlovEntry> expected{videoEntryHvlovEntry};
                 std::vector<HvlovEntry> returnedHvlovEntries = hvlovEntryBuilder.buildEntriesFromFileInfos(fileInfos);
 
-                REQUIRE(returnedHvlovEntries.size() == 1);
-                REQUIRE(returnedHvlovEntries.at(0).title == videoEntryHvlovEntry.title);
-                REQUIRE(returnedHvlovEntries.at(0).url == videoEntryHvlovEntry.url);
-                REQUIRE(returnedHvlovEntries.at(0).type == videoEntryHvlovEntry.type);
+                REQUIRE(nano::equal(returnedHvlovEntries, expected, entriesEquals));
+            }
+        }
+
+        WHEN("Several valid FileInfo for video and folder entries are passed as argument")
+        {
+            std::vector<FileInfo> fileInfos{createFileInfo(fs::path(directory1) / file1, fs::file_type::regular),
+                                            createFileInfo(fs::path(directory1) / directory2, fs::file_type::directory),
+                                            createFileInfo(fs::path(directory1) / file2, fs::file_type::regular)};
+
+            THEN("The corresponding HvlovEntries are returned")
+            {
+                std::vector<HvlovEntry> expected{createHvlovEntry(directory1, file1, HvlovEntry::Type::Video),
+                                                 createHvlovEntry(directory1, directory2, HvlovEntry::Type::Folder),
+                                                 createHvlovEntry(directory1, file2, HvlovEntry::Type::Video)};
+                std::vector<HvlovEntry> returnedHvlovEntries = hvlovEntryBuilder.buildEntriesFromFileInfos(fileInfos);
+
+                REQUIRE(nano::equal(returnedHvlovEntries, expected, entriesEquals));
+            }
+        }
+
+        WHEN("Two valid FileInfo for a video and folder entries with underscore in the name are passed as argument")
+        {
+            std::vector<FileInfo> fileInfos{
+                createFileInfo(fs::path(directory1) / underscoredFile1, fs::file_type::regular),
+                createFileInfo(fs::path(directory1) / underscoredDirectory1, fs::file_type::directory)};
+
+            THEN("The corresponding HvlovEntries are returned, with underscores replaced by spaces for folders")
+            {
+                std::vector<HvlovEntry> expected{
+                    createHvlovEntry(directory1, underscoredFile1, HvlovEntry::Type::Video),
+                    HvlovEntry{spacedDirectory1, Url{directory1 + "/" + underscoredDirectory1},
+                               HvlovEntry::Type::Folder}};
+                std::vector<HvlovEntry> returnedHvlovEntries = hvlovEntryBuilder.buildEntriesFromFileInfos(fileInfos);
+
+                REQUIRE(nano::equal(returnedHvlovEntries, expected, entriesEquals));
+            }
+        }
+
+        WHEN("An valid FileInfo for a video entry with a root different from server root is passed as argument")
+        {
+            std::vector<FileInfo> fileInfos{FileInfo{fs::path{file1}, fs::file_status{fs::file_type::regular}}};
+
+            THEN("The buildEntriesFromFileInfos method throws because it can't match server root with file info")
+            {
+                REQUIRE_THROWS(hvlovEntryBuilder.buildEntriesFromFileInfos(fileInfos));
             }
         }
     }
