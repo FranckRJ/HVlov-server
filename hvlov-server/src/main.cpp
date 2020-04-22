@@ -18,10 +18,17 @@ int main(int argc, char** argv)
         spdlog::error("Server root not passed as first param of command.");
         return 1;
     }
+    if (argc < 3 || argv[2][0] == '\0')
+    {
+        spdlog::error("Server base not passed as second param of command.");
+        return 1;
+    }
 
-    const std::filesystem::path serverRoot = [](const std::filesystem::path& path) {
+    auto removeTrailingSlash = [](const std::filesystem::path& path) {
         return path.has_filename() ? path : path.parent_path();
-    }(argv[1]);
+    };
+    const std::filesystem::path serverRoot = removeTrailingSlash(argv[1]);
+    const std::filesystem::path serverBase = removeTrailingSlash(argv[2]);
     const std::string serverAddress = "localhost";
     constexpr int serverPort = 47107;
 
@@ -32,7 +39,7 @@ int main(int argc, char** argv)
     std::unique_ptr<hvlov::IHvlovEntryFormatter> hvlovEntryFormatter = std::make_unique<hvlov::HvlovEntryFormatter>();
     std::unique_ptr<hvlov::IHttpServerWrapper> httpServerWrapper = std::make_unique<hvlov::HttpServerWrapper>();
 
-    hvlov::HvlovServer::Config hvlovServerConfig{serverRoot, {serverAddress, serverPort}};
+    hvlov::HvlovServer::Config hvlovServerConfig{serverRoot, serverBase, {serverAddress, serverPort}};
     std::unique_ptr<hvlov::IHvlovServer> hvlovServer = std::make_unique<hvlov::HvlovServer>(
         hvlovServerConfig, std::move(httpServerWrapper), std::move(hvlovEntryFormatter), std::move(hvlovEntryBuilder),
         std::move(fileSystemLister));

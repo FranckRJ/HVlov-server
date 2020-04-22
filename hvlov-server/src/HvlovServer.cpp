@@ -30,8 +30,9 @@ namespace hvlov
 
     void HvlovServer::run()
     {
-        spdlog::info("HVlov server start listening on {}:{} with '{}' as root.", _config.connectionInfo.address,
-                     _config.connectionInfo.port, _config.root.string());
+        spdlog::info("HVlov server start listening on {}:{} with '{}' as root and '{}' as relative base.",
+                     _config.connectionInfo.address, _config.connectionInfo.port, _config.root.string(),
+                     _config.relativeBase.string());
         _serverWrapper->listen(_config.connectionInfo.address, _config.connectionInfo.port);
     }
 
@@ -61,7 +62,7 @@ namespace hvlov
             return *optionalError;
         }
 
-        listPath = _config.root / listPath;
+        listPath = _config.root / _config.relativeBase / listPath;
         spdlog::info("Absolute path '{}' used.", listPath.string());
 
         std::vector<HvlovEntry> entries;

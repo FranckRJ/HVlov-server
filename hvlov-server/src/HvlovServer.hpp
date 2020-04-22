@@ -25,6 +25,8 @@ namespace hvlov
         {
             //! The root directory where HvlovEntries will be retrieve.
             std::filesystem::path root;
+            //! The base directory relative to root, base used for every requests.
+            std::filesystem::path relativeBase;
             //! The data on what the server will listen (address + port).
             ServerConnectionInfo connectionInfo;
         };
