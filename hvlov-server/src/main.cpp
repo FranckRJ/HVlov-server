@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <memory>
 
 #include <spdlog/spdlog.h>
@@ -18,7 +19,9 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    const std::string serverRoot = argv[1];
+    const std::filesystem::path serverRoot = [](const std::filesystem::path& path) {
+        return path.has_filename() ? path : path.parent_path();
+    }(argv[1]);
     const std::string serverAddress = "localhost";
     constexpr int serverPort = 47107;
 
