@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
     const std::string serverRoot = argv[1];
     const std::string serverAddress = "localhost";
-    constexpr int serverPort = 1234;
+    constexpr int serverPort = 47107;
 
     std::unique_ptr<hvlov::IFileSystemLister> fileSystemLister = std::make_unique<hvlov::FileSystemLister>();
     hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{serverRoot};
