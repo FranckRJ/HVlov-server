@@ -1,5 +1,6 @@
 ---
 Checks:            '*,-abseil-*,-android-*,-fuchsia-*,-google-*,-llvm-*,-objc-*,-zircon-*,
+                    -cert-err58-cpp,-cppcoreguidelines-pro-type-vararg,-hicpp-vararg,
                     -readability-convert-member-functions-to-static,-readability-redundant-access-specifiers,
                     -modernize-use-nodiscard,-modernize-use-trailing-return-type,
                     -cppcoreguidelines-owning-memory'
