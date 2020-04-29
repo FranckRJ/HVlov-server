@@ -39,3 +39,5 @@ target_link_libraries(hvlov-server PRIVATE
         project_exe_options project_warnings
         lib-hvlov-server
         CONAN_PKG::spdlog)
+
+install(TARGETS hvlov-server DESTINATION bin)
