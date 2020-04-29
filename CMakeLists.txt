@@ -48,3 +48,9 @@ if (ENABLE_TESTING)
 endif ()
 
 add_subdirectory(hvlov-server)
+
+include(InstallRequiredSystemLibraries)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_VERSION_MAJOR "${HVlov-server_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${HVlov-server_VERSION_MINOR}")
+include(CPack)
