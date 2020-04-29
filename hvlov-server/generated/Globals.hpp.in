@@ -1,0 +1,10 @@
+#pragma once
+
+namespace hvlov::globals
+{
+    //! The major version of software.
+    inline constexpr int versionMajor = @HVlov-server_VERSION_MAJOR@;
+
+    //! The minor version of software.
+    inline constexpr int versionMinor = @HVlov-server_VERSION_MINOR@;
+} // namespace hvlov::globals

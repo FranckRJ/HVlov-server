@@ -24,6 +24,8 @@ add_library(lib-hvlov-server STATIC
         src/HvlovEntryFormatter.hpp
         src/HvlovEntry.cpp)
 
+configure_file(generated/Globals.hpp.in generated/Globals.hpp)
+
 target_link_libraries(lib-hvlov-server PRIVATE
         project_exe_options project_warnings
         CONAN_PKG::fmt
@@ -31,7 +33,7 @@ target_link_libraries(lib-hvlov-server PRIVATE
         CONAN_PKG::cpp-httplib
         CONAN_PKG::nanorange)
 
-target_include_directories(lib-hvlov-server PUBLIC src/)
+target_include_directories(lib-hvlov-server PUBLIC src/ "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
 add_executable(hvlov-server src/main.cpp)
 

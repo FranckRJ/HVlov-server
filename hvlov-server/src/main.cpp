@@ -4,6 +4,7 @@
 #include <spdlog/spdlog.h>
 
 #include "FileSystemLister.hpp"
+#include "Globals.hpp"
 #include "HttpServerWrapper.hpp"
 #include "HvlovEntryBuilder.hpp"
 #include "HvlovEntryFormatter.hpp"
@@ -12,6 +13,7 @@
 int main(int argc, char** argv)
 {
     spdlog::set_level(spdlog::level::level_enum::debug);
+    spdlog::info("HVlov-server version {}.{} launched.", hvlov::globals::versionMajor, hvlov::globals::versionMinor);
 
     if (argc < 2 || argv[1][0] == '\0')
     {
