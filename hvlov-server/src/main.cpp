@@ -12,7 +12,14 @@
 
 int main(int argc, char** argv)
 {
-    spdlog::set_level(spdlog::level::level_enum::debug);
+    if (hvlov::globals::buildType == "Debug")
+    {
+        spdlog::set_level(spdlog::level::level_enum::debug);
+    }
+    else
+    {
+        spdlog::set_level(spdlog::level::level_enum::info);
+    }
     spdlog::info("HVlov-server version {}.{} launched.", hvlov::globals::versionMajor, hvlov::globals::versionMinor);
 
     if (argc < 2 || argv[1][0] == '\0')

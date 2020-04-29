@@ -1,7 +1,12 @@
 #pragma once
 
+#include <string>
+
 namespace hvlov::globals
 {
+    //! The type of build used to build the software.
+    inline const std::string buildType = "@CMAKE_BUILD_TYPE@";
+
     //! The major version of software.
     inline constexpr int versionMajor = @HVlov-server_VERSION_MAJOR@;
 
