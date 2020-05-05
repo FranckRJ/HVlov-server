@@ -10,7 +10,7 @@ macro(run_conan)
     conan_add_remote(NAME bincrafters URL https://api.bintray.com/conan/bincrafters/public-conan)
 
     conan_cmake_run(
-            SETTINGS compiler.cppstd=17
+            SETTINGS compiler.cppstd=${CMAKE_CXX_STANDARD}
             CONANFILE conanfile.txt
             BASIC_SETUP CMAKE_TARGETS # individual targets to link to
             BUILD missing)
