@@ -1,6 +1,6 @@
 [requires]
 catch2/2.12.1
-cpp-httplib/0.5.8
+cpp-httplib/0.5.13
 fmt/6.2.0
 nanorange/20200505@franckrj/testing
 spdlog/1.5.0
