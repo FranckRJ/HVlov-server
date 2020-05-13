@@ -22,7 +22,8 @@ add_library(lib-hvlov-server STATIC
         src/IHvlovEntryFormatter.hpp
         src/HvlovEntryFormatter.cpp
         src/HvlovEntryFormatter.hpp
-        src/HvlovEntry.cpp)
+        src/HvlovEntry.cpp
+        src/PimplDeleter.hpp)
 
 configure_file(generated/Globals.hpp.in generated/Globals.hpp)
 

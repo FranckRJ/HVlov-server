@@ -4,7 +4,6 @@
 #include <utility>
 
 #include <fmt/core.h>
-#include <httplib/httplib.h>
 #include <nanorange.hpp>
 #include <spdlog/spdlog.h>
 

@@ -3,12 +3,7 @@
 #include <memory>
 
 #include "IHttpServerWrapper.hpp"
-
-// Forward declaration
-namespace httplib
-{
-    class Server;
-}
+#include "PimplDeleter.hpp"
 
 namespace hvlov
 {
@@ -17,6 +12,9 @@ namespace hvlov
      */
     class HttpServerWrapper : public IHttpServerWrapper
     {
+    public:
+        struct PrivateImpl;
+
     public:
         /*!
          * Construct an HttpServerWrapper.
@@ -28,21 +26,7 @@ namespace hvlov
         bool listen(const std::string& address, int port) override;
 
     private:
-        /*!
-         * Deleter for an httplib::Server. Used for unique_ptr to use the PImpl idiom.
-         */
-        class HttpLibServerDeleter
-        {
-        public:
-            /*!
-             * Function that delete an httplib::Server.
-             *
-             * @param ptr The httplib::Server that will be deleted.
-             */
-            void operator()(httplib::Server* ptr);
-        };
-
-        //! The underlying PImpl for the server.
-        const std::unique_ptr<httplib::Server, HttpLibServerDeleter> _server;
+        //! The underlying PImpl for the server and router.
+        const std::unique_ptr<PrivateImpl, PimplDeleter<PrivateImpl>> _pimpl;
     };
 } // namespace hvlov
