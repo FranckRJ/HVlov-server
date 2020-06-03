@@ -25,6 +25,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install conan
+          echo "::add-path::$HOME/.local/bin"
       - name: Generate build files
         run: |
           mkdir build
