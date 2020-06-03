@@ -15,12 +15,12 @@ defaults:
 
 jobs:
   gcc-10:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Install g++-10
         run: |
-          sudo apt install gcc-10
+          sudo apt-get install g++-10
       - name: Setup python
         uses: actions/setup-python@v1
         with:
