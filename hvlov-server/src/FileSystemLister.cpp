@@ -8,7 +8,7 @@ namespace hvlov
 
         for (const auto& entry : std::filesystem::directory_iterator(directoryPath))
         {
-            entries.emplace_back(FileInfo{entry.path(), entry.status()});
+            entries.emplace_back(entry.path(), entry.status());
         }
 
         return entries;
