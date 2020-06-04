@@ -1,7 +1,9 @@
 #include "HvlovEntryFormatter.hpp"
 
+#include <algorithm>
+#include <iterator>
+
 #include <fmt/core.h>
-#include <nanorange.hpp>
 
 namespace hvlov
 {
@@ -16,8 +18,8 @@ namespace hvlov
         std::vector<std::string> formattedEntries;
 
         formattedEntries.reserve(entries.size());
-        nano::transform(entries, nano::back_inserter(formattedEntries),
-                        [this](const auto& p) { return formatEntryToHtml(p); });
+        std::ranges::transform(entries, std::back_inserter(formattedEntries),
+                               [this](const auto& p) { return formatEntryToHtml(p); });
 
         return formattedEntries;
     }

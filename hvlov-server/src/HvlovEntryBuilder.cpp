@@ -1,11 +1,11 @@
 #include "HvlovEntryBuilder.hpp"
 
+#include <algorithm>
 #include <functional>
+#include <iterator>
 #include <numeric>
 #include <stdexcept>
 #include <utility>
-
-#include <nanorange.hpp>
 
 namespace hvlov
 {
@@ -18,10 +18,10 @@ namespace hvlov
         std::vector<HvlovEntry> hvlovEntries;
 
         hvlovEntries.reserve(fileInfos.size());
-        nano::transform(fileInfos, nano::back_inserter(hvlovEntries),
-                        [this](const auto& p) { return fileInfoToHvlovEntry(p); });
+        std::ranges::transform(fileInfos, std::back_inserter(hvlovEntries),
+                               [this](const auto& p) { return fileInfoToHvlovEntry(p); });
 
-        nano::sort(hvlovEntries);
+        std::ranges::sort(hvlovEntries);
 
         return hvlovEntries;
     }
@@ -48,7 +48,7 @@ namespace hvlov
 
         if (hvlovEntryType == HvlovEntry::Type::Folder)
         {
-            nano::replace(hvlovEntryTitle, '_', ' ');
+            std::ranges::replace(hvlovEntryTitle, '_', ' ');
         }
 
         return hvlovEntryTitle;
@@ -61,7 +61,7 @@ namespace hvlov
                  ? _config.serverRoot
                  : _config.serverRoot / _config.serverRelativeBase);
 
-        auto [filePathMismatch, rootPathMismatch] = nano::mismatch(fileInfo.path, relativeRoot);
+        auto [filePathMismatch, rootPathMismatch] = std::ranges::mismatch(fileInfo.path, relativeRoot);
 
         if (rootPathMismatch != relativeRoot.end() || filePathMismatch == fileInfo.path.end())
         {

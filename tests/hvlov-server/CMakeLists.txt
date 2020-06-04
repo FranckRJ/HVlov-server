@@ -14,7 +14,6 @@ add_executable(test-hvlov-server
 target_link_libraries(test-hvlov-server PRIVATE
         project_test_options project_warnings
         lib-hvlov-server
-        CONAN_PKG::catch2
-        CONAN_PKG::nanorange)
+        CONAN_PKG::catch2)
 
 catch_discover_tests(test-hvlov-server)
