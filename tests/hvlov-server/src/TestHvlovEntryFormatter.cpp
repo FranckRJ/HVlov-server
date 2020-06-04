@@ -24,7 +24,7 @@ SCENARIO("HvlovEntryFormatter::formatEntryToHtml()", "[unit]")
 
         WHEN("A video entry is formatted to HTML")
         {
-            HvlovEntry videoEntry{file1, Url{urlToFile1}, HvlovEntry::Type::Video};
+            HvlovEntry videoEntry{HvlovEntry::Type::Video, file1, Url{urlToFile1}};
 
             THEN("The returned string is the HTML representation of the video entry")
             {
@@ -36,7 +36,7 @@ SCENARIO("HvlovEntryFormatter::formatEntryToHtml()", "[unit]")
 
         WHEN("A folder entry is formatted to HTML")
         {
-            HvlovEntry folderEntry{directory1, Url{urlToDirectory1}, HvlovEntry::Type::Folder};
+            HvlovEntry folderEntry{HvlovEntry::Type::Folder, directory1, Url{urlToDirectory1}};
 
             THEN("The returned string is the HTML representation of the folder entry")
             {
@@ -57,10 +57,10 @@ SCENARIO("HvlovEntryFormatter::formatEntriesToHtml()", "[unit]")
         WHEN("Several video / folder entries are formatted to HTML")
         {
             std::vector<HvlovEntry> hvlovEntries{
-                HvlovEntry{file1, Url{urlToFile1}, HvlovEntry::Type::Video},
-                HvlovEntry{directory1, Url{urlToDirectory1}, HvlovEntry::Type::Folder},
-                HvlovEntry{file2, Url{urlToFile2}, HvlovEntry::Type::Video},
-                HvlovEntry{directory2, Url{urlToDirectory2}, HvlovEntry::Type::Folder}};
+                HvlovEntry{HvlovEntry::Type::Video, file1, Url{urlToFile1}},
+                HvlovEntry{HvlovEntry::Type::Folder, directory1, Url{urlToDirectory1}},
+                HvlovEntry{HvlovEntry::Type::Video, file2, Url{urlToFile2}},
+                HvlovEntry{HvlovEntry::Type::Folder, directory2, Url{urlToDirectory2}}};
 
             THEN("The returned strings are the HTML representation of each entries")
             {

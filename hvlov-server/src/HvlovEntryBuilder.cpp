@@ -32,7 +32,7 @@ namespace hvlov
         std::string hvlovEntryTitle = extractHvlovEntryTitle(fileInfo, hvlovEntryType);
         Url hvlovEntryUrl = extractHvlovEntryUrl(fileInfo, hvlovEntryType);
 
-        return HvlovEntry{hvlovEntryTitle, hvlovEntryUrl, hvlovEntryType};
+        return HvlovEntry{hvlovEntryType, hvlovEntryTitle, hvlovEntryUrl};
     }
 
     HvlovEntry::Type HvlovEntryBuilder::extractHvlovEntryType(const FileInfo& fileInfo) const

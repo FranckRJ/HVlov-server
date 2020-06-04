@@ -1,5 +1,6 @@
 #pragma once
 
+#include <compare>
 #include <string>
 
 namespace hvlov
@@ -24,34 +25,8 @@ namespace hvlov
          */
         [[nodiscard]] std::string toString() const;
 
-    private:
-        /*!
-         * Return the result of the spaceship operator applied to lhs and rhs, lhs <=> rhs.
-         * The result is negative if lhs < rhs, positive if lhs > rhs, 0 if lhs == rhs.
-         *
-         * @param lhs The left hand side of the operation.
-         * @param rhs The right hand side of the operation.
-         * @return The result of lhs <=> rhs.
-         */
-        friend int operatorSpaceship(const Url& lhs, const Url& rhs);
-
-        //! lhs == rhs operation.
-        friend bool operator==(const Url& lhs, const Url& rhs);
-
-        //! lhs != rhs operation.
-        friend bool operator!=(const Url& lhs, const Url& rhs);
-
-        //! lhs < rhs operation.
-        friend bool operator<(const Url& lhs, const Url& rhs);
-
-        //! lhs > rhs operation.
-        friend bool operator>(const Url& lhs, const Url& rhs);
-
-        //! lhs <= rhs operation.
-        friend bool operator<=(const Url& lhs, const Url& rhs);
-
-        //! lhs >= rhs operation.
-        friend bool operator>=(const Url& lhs, const Url& rhs);
+        //! lhs <=> rhs operation.
+        std::strong_ordering operator<=>(const Url& other) const = default;
 
     private:
         //! The underlying string that store the URL.

@@ -23,9 +23,9 @@ namespace
         return FileInfo{serverRoot / relativePath, fs::file_status{type}};
     }
 
-    HvlovEntry createHvlovEntry(const std::string& fileDirectory, const std::string& fileName, HvlovEntry::Type type)
+    HvlovEntry createHvlovEntry(HvlovEntry::Type type, const std::string& fileDirectory, const std::string& fileName)
     {
-        return HvlovEntry{fileName, Url{fileDirectory + "/" + fileName}, type};
+        return HvlovEntry{type, fileName, Url{fileDirectory + "/" + fileName}};
     }
 } // namespace
 
@@ -43,7 +43,7 @@ SCENARIO("HvlovEntryBuilder::buildEntriesFromFileInfos()", "[unit]")
 
             THEN("The corresponding sorted HvlovEntry is returned")
             {
-                HvlovEntry videoEntryHvlovEntry = createHvlovEntry(directory1, file1, HvlovEntry::Type::Video);
+                HvlovEntry videoEntryHvlovEntry = createHvlovEntry(HvlovEntry::Type::Video, directory1, file1);
 
                 std::vector<HvlovEntry> expected{videoEntryHvlovEntry};
                 std::vector<HvlovEntry> returnedHvlovEntries = hvlovEntryBuilder.buildEntriesFromFileInfos(fileInfos);
@@ -62,10 +62,10 @@ SCENARIO("HvlovEntryBuilder::buildEntriesFromFileInfos()", "[unit]")
 
             THEN("The corresponding sorted HvlovEntries are returned")
             {
-                std::vector<HvlovEntry> expected{createHvlovEntry(directory1, directory1, HvlovEntry::Type::Folder),
-                                                 createHvlovEntry(directory1, directory2, HvlovEntry::Type::Folder),
-                                                 createHvlovEntry(directory1, file1, HvlovEntry::Type::Video),
-                                                 createHvlovEntry(directory1, file2, HvlovEntry::Type::Video)};
+                std::vector<HvlovEntry> expected{createHvlovEntry(HvlovEntry::Type::Folder, directory1, directory1),
+                                                 createHvlovEntry(HvlovEntry::Type::Folder, directory1, directory2),
+                                                 createHvlovEntry(HvlovEntry::Type::Video, directory1, file1),
+                                                 createHvlovEntry(HvlovEntry::Type::Video, directory1, file2)};
                 std::vector<HvlovEntry> returnedHvlovEntries = hvlovEntryBuilder.buildEntriesFromFileInfos(fileInfos);
 
                 REQUIRE(returnedHvlovEntries == expected);
@@ -81,9 +81,9 @@ SCENARIO("HvlovEntryBuilder::buildEntriesFromFileInfos()", "[unit]")
             THEN("The corresponding sorted HvlovEntries are returned, with underscores replaced by spaces for folders")
             {
                 std::vector<HvlovEntry> expected{
-                    HvlovEntry{spacedDirectory1, Url{directory1 + "/" + underscoredDirectory1},
-                               HvlovEntry::Type::Folder},
-                    createHvlovEntry(directory1, underscoredFile1, HvlovEntry::Type::Video)};
+                    HvlovEntry{HvlovEntry::Type::Folder, spacedDirectory1,
+                               Url{directory1 + "/" + underscoredDirectory1}},
+                    createHvlovEntry(HvlovEntry::Type::Video, directory1, underscoredFile1)};
                 std::vector<HvlovEntry> returnedHvlovEntries = hvlovEntryBuilder.buildEntriesFromFileInfos(fileInfos);
 
                 REQUIRE(returnedHvlovEntries == expected);
