@@ -18,23 +18,31 @@ jobs:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
+      - name: Setup CMake
+        run: |
+          pacman --noconfirm -S mingw-w64-x86_64-cmake
       - name: Install Conan
         run: |
+          export PATH="C:/msys64/mingw64/bin/:$PATH"
           python -m pip install --upgrade pip
           pip install conan
       - name: Generate build files
         run: |
+          export PATH="C:/msys64/mingw64/bin/:$PATH"
           mkdir build
           cd build
           cmake .. -G "CodeBlocks - MinGW Makefiles" -DCMAKE_C_COMPILER="C:/msys64/mingw64/bin/gcc.exe" -DCMAKE_CXX_COMPILER="C:/msys64/mingw64/bin/g++.exe" -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_SANITIZER_ADDRESS=ON -DENABLE_SANITIZER_UNDEFINED_BEHAVIOR=ON
       - name: Build project
         run: |
+          export PATH="C:/msys64/mingw64/bin/:$PATH"
           cd build
           cmake --build . --config Debug
       - name: Run tests
         run: |
+          export PATH="C:/msys64/mingw64/bin/:$PATH"
           cd build
           ctest --output-on-failure --build-config Debug
       - name: Upload coverage to Codecov
         run: |
+          export PATH="C:/msys64/mingw64/bin/:$PATH"
           bash <(curl -s https://codecov.io/bash) -x "C:/msys64/mingw64/bin/gcov.exe" || echo "Codecov did not collect coverage reports"
