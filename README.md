@@ -6,4 +6,4 @@
 Serveur pour HVlov.  
 
 Testé sur :
-- Linux : GCC 10.  
+- Linux (Ubuntu 20.04) : GCC 10.  
