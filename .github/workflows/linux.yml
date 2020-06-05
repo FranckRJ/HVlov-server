@@ -21,7 +21,7 @@ jobs:
       - name: Install g++-10
         run: |
           wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-10/g++-10_10.1.0-3ubuntu1_amd64.deb
-          sudo apt -y install g++-10_10.1.0-3ubuntu1_amd64.deb
+          sudo apt -y install ./g++-10_10.1.0-3ubuntu1_amd64.deb
       - name: Install Conan
         run: |
           python3 -m pip install --upgrade pip
