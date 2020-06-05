@@ -1,4 +1,4 @@
-name: Linux Build
+name: Windows Build
 
 on:
   push:
@@ -6,19 +6,18 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 defaults:
   run:
     shell: bash
 
 jobs:
-  gcc-10:
-    runs-on: ubuntu-20.04
+  msys2-mingw64-gcc-10:
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
-      - name: Install g++-10
-        run: |
-          sudo apt-get -y update
-          sudo apt-get -y install g++-10
       - name: Install Conan
         run: |
           python3 -m pip install --upgrade pip
@@ -28,7 +27,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_SANITIZER_ADDRESS=ON -DENABLE_SANITIZER_UNDEFINED_BEHAVIOR=ON
+          cmake .. -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DENABLE_SANITIZER_ADDRESS=ON -DENABLE_SANITIZER_UNDEFINED_BEHAVIOR=ON
       - name: Build project
         run: |
           cd build
@@ -37,3 +36,6 @@ jobs:
         run: |
           cd build
           ctest --output-on-failure --build-config Debug
+      - name: Upload coverage to Codecov
+        run: |
+          bash <(curl -s https://codecov.io/bash) -x gcov || echo "Codecov did not collect coverage reports"
