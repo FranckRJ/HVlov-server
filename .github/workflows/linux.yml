@@ -20,19 +20,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install g++-10
         run: |
-          sudo echo "deb http://mirror.servers.com/ubuntu/ groovy main restricted universe" >> /etc/apt/sources.list
-          sudo echo "deb http://security.ubuntu.com/ubuntu/ groovy-security main restricted universe" >> /etc/apt/sources.list
-          echo ________1
-          sudo cat /etc/apt/sources.list
-          echo ________2
-          sudo echo "Package: *" >> /etc/apt/preferences.d/custom_groovy.pref
-          sudo echo "Pin: release n=groovy" >> /etc/apt/preferences.d/custom_groovy.pref
-          sudo echo "Pin-Priority: -10" >> /etc/apt/preferences.d/custom_groovy.pref
-          sudo echo "Package: g++-10" >> /etc/apt/preferences.d/custom_groovy.pref
-          sudo echo "Pin: release n=groovy" >> /etc/apt/preferences.d/custom_groovy.pref
-          sudo echo "Pin-Priority: 500" >> /etc/apt/preferences.d/custom_groovy.pref
-          sudo apt-get -y update
-          sudo apt-get -y install g++-10
+          wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-10/g++-10_10.1.0-3ubuntu1_amd64.deb
+          sudo apt -y install g++-10_10.1.0-3ubuntu1_amd64.deb
       - name: Install Conan
         run: |
           python3 -m pip install --upgrade pip
