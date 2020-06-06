@@ -3,7 +3,11 @@ Checks:            '*,-abseil-*,-android-*,-fuchsia-*,-google-*,-llvm-*,-objc-*,
                     -cert-err58-cpp,-hicpp-vararg,
                     -readability-convert-member-functions-to-static,-readability-redundant-access-specifiers,
                     -modernize-use-nodiscard,-modernize-use-trailing-return-type,
-                    -cppcoreguidelines-owning-memory'
+                    -cppcoreguidelines-owning-memory,
+                    -llvmlibc-callee-namespace'
 WarningsAsErrors:  '*'
 HeaderFilterRegex: ''
 FormatStyle:       none
+CheckOptions:
+  - key:           misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value:         true
