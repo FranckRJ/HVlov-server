@@ -36,7 +36,7 @@ SCENARIO("Url::toString()", "[unit]")
     }
 }
 
-SCENARIO("Url::operator==() / Url::operator!=()", "[unit]")
+SCENARIO("Url::operator<=>()", "[unit]")
 {
     GIVEN("Two URL constructed from the same string")
     {
