@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     }
     if (argc < 3 || argv[2][0] == '\0')
     {
-        spdlog::error("Server base not passed as second param of command.");
+        spdlog::error("Videos prefix not passed as second param of command.");
         return 1;
     }
 
@@ -37,18 +37,20 @@ int main(int argc, char** argv)
         return path.has_filename() ? path : path.parent_path();
     };
     const std::filesystem::path serverRoot = removeTrailingSlash(argv[1]);
-    const std::filesystem::path serverBase = removeTrailingSlash(argv[2]);
+    const std::filesystem::path serverVideosPrefix = removeTrailingSlash(argv[2]);
     const std::string serverAddress = "localhost";
     constexpr int serverPort = 47107;
 
     std::unique_ptr<hvlov::IFileSystemLister> fileSystemLister = std::make_unique<hvlov::FileSystemLister>();
-    hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{serverRoot, serverBase};
+    hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{.serverRoot = serverRoot,
+                                                             .serverVideosPrefix = serverVideosPrefix};
     std::unique_ptr<hvlov::IHvlovEntryBuilder> hvlovEntryBuilder =
         std::make_unique<hvlov::HvlovEntryBuilder>(hvlovEntryBuilderConfig);
     std::unique_ptr<hvlov::IHvlovEntryFormatter> hvlovEntryFormatter = std::make_unique<hvlov::HvlovEntryFormatter>();
     std::unique_ptr<hvlov::IHttpServerWrapper> httpServerWrapper = std::make_unique<hvlov::HttpServerWrapper>();
 
-    hvlov::HvlovServer::Config hvlovServerConfig{serverRoot, serverBase, {serverAddress, serverPort}};
+    hvlov::HvlovServer::Config hvlovServerConfig{
+        .root = serverRoot, .videosUrlPrefix = serverVideosPrefix, .connectionInfo = {serverAddress, serverPort}};
     std::unique_ptr<hvlov::IHvlovServer> hvlovServer = std::make_unique<hvlov::HvlovServer>(
         hvlovServerConfig, std::move(httpServerWrapper), std::move(hvlovEntryFormatter), std::move(hvlovEntryBuilder),
         std::move(fileSystemLister));

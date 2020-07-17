@@ -1,6 +1,6 @@
 [requires]
-catch2/2.12.2
-cpp-httplib/0.5.13
+catch2/2.13.0
+cpp-httplib/0.7.0
 fmt/6.2.1
 spdlog/1.6.1
 

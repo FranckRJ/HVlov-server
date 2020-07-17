@@ -56,20 +56,20 @@ namespace hvlov
 
     Url HvlovEntryBuilder::extractHvlovEntryUrl(const FileInfo& fileInfo, HvlovEntry::Type hvlovEntryType) const
     {
-        std::filesystem::path relativeRoot =
-            (hvlovEntryType == HvlovEntry::Type::Video || _config.serverRelativeBase.empty()
-                 ? _config.serverRoot
-                 : _config.serverRoot / _config.serverRelativeBase);
+        auto [filePathMismatch, rootPathMismatch] = std::ranges::mismatch(fileInfo.path, _config.serverRoot);
 
-        auto [filePathMismatch, rootPathMismatch] = std::ranges::mismatch(fileInfo.path, relativeRoot);
-
-        if (rootPathMismatch != relativeRoot.end() || filePathMismatch == fileInfo.path.end())
+        if (rootPathMismatch != _config.serverRoot.end() || filePathMismatch == fileInfo.path.end())
         {
             throw std::runtime_error{"Entry not inside server root."};
         }
 
         std::filesystem::path entryPath =
             std::accumulate(filePathMismatch, fileInfo.path.end(), std::filesystem::path{}, std::divides{});
+
+        if (hvlovEntryType == HvlovEntry::Type::Video && !_config.serverVideosPrefix.empty())
+        {
+            entryPath = _config.serverVideosPrefix / entryPath;
+        }
 
         return Url{entryPath.generic_string()};
     }

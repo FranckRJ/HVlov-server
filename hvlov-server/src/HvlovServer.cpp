@@ -29,9 +29,9 @@ namespace hvlov
 
     void HvlovServer::run()
     {
-        spdlog::info("HVlov server start listening on {}:{} with '{}' as root and '{}' as relative base.",
+        spdlog::info("HVlov server start listening on {}:{} with '{}' as root and '{}' as videos URL prefix.",
                      _config.connectionInfo.address, _config.connectionInfo.port, _config.root.string(),
-                     _config.relativeBase.string());
+                     _config.videosUrlPrefix.string());
         _serverWrapper->listen(_config.connectionInfo.address, _config.connectionInfo.port);
     }
 
@@ -61,7 +61,7 @@ namespace hvlov
             return *optionalError;
         }
 
-        listPath = _config.root / _config.relativeBase / listPath;
+        listPath = _config.root / listPath;
         spdlog::info("Absolute path '{}' used.", listPath.string());
 
         std::vector<HvlovEntry> entries;

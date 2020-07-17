@@ -17,10 +17,10 @@ namespace hvlov
          */
         struct Config
         {
-            //! The path of the root of the server. Video entries are built relatively to it.
+            //! The path of the root of the server. Entries are built relatively to it.
             std::filesystem::path serverRoot;
-            //! The base directory relative to root. Folder entries are built relatively to it.
-            std::filesystem::path serverRelativeBase;
+            //! A prefix appended to video entry URL, because they are not accessed from root.
+            std::filesystem::path serverVideosPrefix;
         };
 
         /*!

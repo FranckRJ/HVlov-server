@@ -10,6 +10,7 @@ namespace fs = std::filesystem;
 namespace
 {
     const fs::path serverRoot = fs::path{"server"} / "root";
+    const fs::path serverVideosPrefix = "root";
     const std::string directory1 = "folder1";
     const std::string directory2 = "folder2";
     const std::string underscoredDirectory1 = "folder_1";
@@ -25,7 +26,9 @@ namespace
 
     HvlovEntry createHvlovEntry(HvlovEntry::Type type, const std::string& fileDirectory, const std::string& fileName)
     {
-        return HvlovEntry{type, fileName, Url{fileDirectory + "/" + fileName}};
+        return HvlovEntry{type, fileName,
+                          Url{(type == HvlovEntry::Type::Video ? serverVideosPrefix.string() + "/" : "") +
+                              fileDirectory + "/" + fileName}};
     }
 } // namespace
 
@@ -33,7 +36,7 @@ SCENARIO("HvlovEntryBuilder::buildEntriesFromFileInfos()", "[unit]")
 {
     GIVEN("A constructed HvlovEntryBuilder with a valid configuration")
     {
-        HvlovEntryBuilder::Config config{serverRoot, fs::path{}};
+        HvlovEntryBuilder::Config config{.serverRoot = serverRoot, .serverVideosPrefix = serverVideosPrefix};
         HvlovEntryBuilder hvlovEntryBuilder{config};
 
         WHEN("A valid FileInfo for a video entry is passed as argument")
