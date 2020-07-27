@@ -19,9 +19,9 @@ add_library(lib-hvlov-server STATIC
         src/HttpServerWrapper.cpp
         src/HttpServerWrapper.hpp
         src/HttpRequest.hpp
-        src/IHvlovEntryFormatter.hpp
-        src/HvlovEntryFormatter.cpp
-        src/HvlovEntryFormatter.hpp
+        src/IHvlovEntrySerializer.hpp
+        src/HvlovEntrySerializer.cpp
+        src/HvlovEntrySerializer.hpp
         src/PimplDeleter.hpp)
 
 configure_file(generated/Globals.hpp.in generated/Globals.hpp)

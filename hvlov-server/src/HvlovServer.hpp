@@ -9,7 +9,7 @@
 #include "IFileSystemLister.hpp"
 #include "IHttpServerWrapper.hpp"
 #include "IHvlovEntryBuilder.hpp"
-#include "IHvlovEntryFormatter.hpp"
+#include "IHvlovEntrySerializer.hpp"
 #include "IHvlovServer.hpp"
 #include "ServerConnectionInfo.hpp"
 
@@ -35,13 +35,13 @@ namespace hvlov
          * Construct an HvlovServer with a specific configuration and services.
          *
          * @param config The configuration to use.
-         * @param hvlovEntryFormatter The service used to format HvlovEntries.
+         * @param hvlovEntrySerializer The service used to serialize HvlovEntries.
          * @param serverWrapper The server wrapper to use.
          * @param hvlovEntryBuilder The service used to build HvlovEntries.
          * @param fileSystemLister The service used to retrieve info about files on filesystem.
          */
         explicit HvlovServer(Config config, std::unique_ptr<IHttpServerWrapper> serverWrapper,
-                             std::unique_ptr<IHvlovEntryFormatter> hvlovEntryFormatter,
+                             std::unique_ptr<IHvlovEntrySerializer> hvlovEntrySerializer,
                              std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
                              std::unique_ptr<IFileSystemLister> fileSystemLister);
 
@@ -78,8 +78,8 @@ namespace hvlov
 
         //! The underlying server.
         const std::unique_ptr<IHttpServerWrapper> _serverWrapper;
-        //! The service used to format HvlovEntries.
-        const std::unique_ptr<IHvlovEntryFormatter> _hvlovEntryFormatter;
+        //! The service used to serialize HvlovEntries.
+        const std::unique_ptr<IHvlovEntrySerializer> _hvlovEntrySerializer;
         //! The service used to build HvlovEntries.
         const std::unique_ptr<IHvlovEntryBuilder> _hvlovEntryBuilder;
         //! The service used to retrieve info about files on filesystem.

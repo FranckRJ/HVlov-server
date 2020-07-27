@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(HVlov-server VERSION 0.1 LANGUAGES CXX)
+project(HVlov-server VERSION 0.2 LANGUAGES CXX)
 
 # Set C++ standard requirements
 set(CMAKE_CXX_STANDARD 20)

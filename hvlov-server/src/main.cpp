@@ -7,7 +7,7 @@
 #include "Globals.hpp"
 #include "HttpServerWrapper.hpp"
 #include "HvlovEntryBuilder.hpp"
-#include "HvlovEntryFormatter.hpp"
+#include "HvlovEntrySerializer.hpp"
 #include "HvlovServer.hpp"
 
 int main(int argc, char** argv)
@@ -46,13 +46,14 @@ int main(int argc, char** argv)
                                                              .serverVideosPrefix = serverVideosPrefix};
     std::unique_ptr<hvlov::IHvlovEntryBuilder> hvlovEntryBuilder =
         std::make_unique<hvlov::HvlovEntryBuilder>(hvlovEntryBuilderConfig);
-    std::unique_ptr<hvlov::IHvlovEntryFormatter> hvlovEntryFormatter = std::make_unique<hvlov::HvlovEntryFormatter>();
+    std::unique_ptr<hvlov::IHvlovEntrySerializer> hvlovEntrySerializer =
+        std::make_unique<hvlov::HvlovEntrySerializer>();
     std::unique_ptr<hvlov::IHttpServerWrapper> httpServerWrapper = std::make_unique<hvlov::HttpServerWrapper>();
 
     hvlov::HvlovServer::Config hvlovServerConfig{
         .root = serverRoot, .videosUrlPrefix = serverVideosPrefix, .connectionInfo = {serverAddress, serverPort}};
     std::unique_ptr<hvlov::IHvlovServer> hvlovServer = std::make_unique<hvlov::HvlovServer>(
-        hvlovServerConfig, std::move(httpServerWrapper), std::move(hvlovEntryFormatter), std::move(hvlovEntryBuilder),
+        hvlovServerConfig, std::move(httpServerWrapper), std::move(hvlovEntrySerializer), std::move(hvlovEntryBuilder),
         std::move(fileSystemLister));
 
     hvlovServer->run();

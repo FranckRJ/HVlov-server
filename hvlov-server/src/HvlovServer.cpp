@@ -10,16 +10,16 @@
 namespace hvlov
 {
     HvlovServer::HvlovServer(HvlovServer::Config config, std::unique_ptr<IHttpServerWrapper> serverWrapper,
-                             std::unique_ptr<IHvlovEntryFormatter> hvlovEntryFormatter,
+                             std::unique_ptr<IHvlovEntrySerializer> hvlovEntrySerializer,
                              std::unique_ptr<IHvlovEntryBuilder> hvlovEntryBuilder,
                              std::unique_ptr<IFileSystemLister> fileSystemLister)
         : _config{std::move(config)}
         , _serverWrapper{std::move(serverWrapper)}
-        , _hvlovEntryFormatter{std::move(hvlovEntryFormatter)}
+        , _hvlovEntrySerializer{std::move(hvlovEntrySerializer)}
         , _hvlovEntryBuilder{std::move(hvlovEntryBuilder)}
         , _fileSystemLister{std::move(fileSystemLister)}
     {
-        if (!_serverWrapper || !_hvlovEntryFormatter || !_hvlovEntryBuilder || !_fileSystemLister)
+        if (!_serverWrapper || !_hvlovEntrySerializer || !_hvlovEntryBuilder || !_fileSystemLister)
         {
             throw std::invalid_argument{"HvlovServer cannot be initialized with null parameters."};
         }
@@ -76,12 +76,8 @@ namespace hvlov
             return HttpResponse{HttpResponse::Status::BadRequest, fmt::format("Error : {}", e.what())};
         }
 
-        std::string responseBody;
-        for (const auto& formattedEntry : _hvlovEntryFormatter->formatEntriesToHtml(entries))
-        {
-            spdlog::debug(formattedEntry);
-            responseBody += formattedEntry + "\n";
-        }
+        std::string responseBody = _hvlovEntrySerializer->serializeEntriesToJson(entries);
+        spdlog::debug(responseBody);
 
         spdlog::info("List request for '{}' succeed.", pathParam);
         return HttpResponse{HttpResponse::Status::Ok, responseBody};
