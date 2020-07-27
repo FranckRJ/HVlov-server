@@ -1,8 +1,8 @@
 [requires]
 catch2/2.13.0
 cpp-httplib/0.7.0
-fmt/6.2.1
-spdlog/1.6.1
+fmt/7.0.1
+spdlog/1.7.0
 
 [generators]
 cmake
