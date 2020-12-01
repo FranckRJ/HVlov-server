@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 defaults:
   run:
     shell: bash
@@ -23,7 +26,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install conan
-          echo "::add-path::$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Generate build files
         run: |
           mkdir build
@@ -37,3 +40,6 @@ jobs:
         run: |
           cd build
           ctest --output-on-failure --build-config Debug
+      - name: Upload coverage to Codecov
+        run: |
+          bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
