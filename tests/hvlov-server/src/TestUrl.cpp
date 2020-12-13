@@ -4,6 +4,7 @@
 
 using namespace hvlov;
 
+// NOLINTNEXTLINE
 SCENARIO("Url::toString()", "[unit]")
 {
     GIVEN("A constructed URL from a string")
@@ -36,6 +37,7 @@ SCENARIO("Url::toString()", "[unit]")
     }
 }
 
+// NOLINTNEXTLINE
 SCENARIO("Url::operator<=>()", "[unit]")
 {
     GIVEN("Two URL constructed from the same string")

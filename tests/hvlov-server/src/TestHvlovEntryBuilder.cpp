@@ -32,6 +32,7 @@ namespace
     }
 } // namespace
 
+// NOLINTNEXTLINE
 SCENARIO("HvlovEntryBuilder::buildEntriesFromFileInfos()", "[unit]")
 {
     GIVEN("A constructed HvlovEntryBuilder with a valid configuration")

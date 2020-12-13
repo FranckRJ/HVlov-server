@@ -16,6 +16,7 @@ namespace
     const std::string urlToFile2 = "url/to/" + file2;
 } // namespace
 
+// NOLINTNEXTLINE
 SCENARIO("HvlovEntrySerializer::serializeEntryToJson()", "[unit]")
 {
     GIVEN("A constructed HvlovEntrySerializer")

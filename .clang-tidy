@@ -3,8 +3,8 @@ Checks:            '*,-abseil-*,-android-*,-fuchsia-*,-google-*,-llvm-*,-objc-*,
                     -cert-err58-cpp,-hicpp-vararg,
                     -readability-convert-member-functions-to-static,-readability-redundant-access-specifiers,
                     -modernize-use-nodiscard,-modernize-use-trailing-return-type,
-                    -cppcoreguidelines-owning-memory,
-                    -llvmlibc-callee-namespace'
+                    -llvmlibc-callee-namespace,
+                    -altera-struct-pack-align'
 WarningsAsErrors:  '*'
 HeaderFilterRegex: ''
 FormatStyle:       none

@@ -12,7 +12,7 @@ namespace hvlov
     class PimplDeleter
     {
     public:
-        // TODO: Replace pointer by gsl::owner, and re-enable the cppcoreguidelines-owning-memory warning.
+        // TODO: Replace pointer by gsl::owner.
         /*!
          * The deleter function.
          *
