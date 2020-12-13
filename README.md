@@ -8,3 +8,4 @@ Serveur pour HVlov.
 
 Testé sur :
 - Linux (Ubuntu 20.04) : GCC 10.  
+- Windows (Server 2019) : GCC 10 (MSYS2).  
