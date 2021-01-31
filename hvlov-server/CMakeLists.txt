@@ -30,6 +30,7 @@ target_link_libraries(lib-hvlov-server PRIVATE
         project_exe_options project_warnings
         CONAN_PKG::fmt
         CONAN_PKG::spdlog
+        CONAN_PKG::nlohmann_json
         CONAN_PKG::cpp-httplib)
 
 target_include_directories(lib-hvlov-server PUBLIC src/ "${CMAKE_CURRENT_BINARY_DIR}/generated")

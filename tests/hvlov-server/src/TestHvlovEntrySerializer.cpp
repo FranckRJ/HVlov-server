@@ -29,7 +29,7 @@ SCENARIO("HvlovEntrySerializer::serializeEntryToJson()", "[unit]")
 
             THEN("The returned string is the JSON representation of the video entry")
             {
-                std::string expected = R"({"type":"video","url":"url/to/file1","title":"file1"})";
+                std::string expected = R"({"title":"file1","type":"video","url":"url/to/file1"})";
 
                 REQUIRE(hvlovEntrySerializer.serializeEntryToJson(videoEntry) == expected);
             }
@@ -41,7 +41,7 @@ SCENARIO("HvlovEntrySerializer::serializeEntryToJson()", "[unit]")
 
             THEN("The returned string is the JSON representation of the folder entry")
             {
-                std::string expected = R"({"type":"folder","url":"url/to/directory1","title":"directory1"})";
+                std::string expected = R"({"title":"directory1","type":"folder","url":"url/to/directory1"})";
 
                 REQUIRE(hvlovEntrySerializer.serializeEntryToJson(folderEntry) == expected);
             }
@@ -65,10 +65,10 @@ SCENARIO("HvlovEntrySerializer::serializeEntriesToJson()", "[unit]")
 
             THEN("The returned string is the JSON representation of each entries")
             {
-                std::string expected = R"([{"type":"video","url":"url/to/file1","title":"file1"},)"
-                                       R"({"type":"folder","url":"url/to/directory1","title":"directory1"},)"
-                                       R"({"type":"video","url":"url/to/file2","title":"file2"},)"
-                                       R"({"type":"folder","url":"url/to/directory2","title":"directory2"}])";
+                std::string expected = R"([{"title":"file1","type":"video","url":"url/to/file1"},)"
+                                       R"({"title":"directory1","type":"folder","url":"url/to/directory1"},)"
+                                       R"({"title":"file2","type":"video","url":"url/to/file2"},)"
+                                       R"({"title":"directory2","type":"folder","url":"url/to/directory2"}])";
 
                 REQUIRE(hvlovEntrySerializer.serializeEntriesToJson(hvlovEntries) == expected);
             }

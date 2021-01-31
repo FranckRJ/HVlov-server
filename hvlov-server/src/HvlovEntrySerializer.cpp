@@ -5,14 +5,19 @@
 #include <ranges>
 
 #include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 namespace hvlov
 {
     std::string HvlovEntrySerializer::serializeEntryToJson(const HvlovEntry& entry) const
     {
-        return fmt::format(R"({{"type":"{0}","url":"{1}","title":"{2}"}})",
-                           (entry.type == HvlovEntry::Type::Folder ? "folder" : "video"), entry.url.toString(),
-                           entry.title);
+        nlohmann::json jsonEntry;
+
+        jsonEntry["type"] = entry.type == HvlovEntry::Type::Folder ? "folder" : "video";
+        jsonEntry["url"] = entry.url.toString();
+        jsonEntry["title"] = entry.title;
+
+        return jsonEntry.dump();
     }
 
     std::string HvlovEntrySerializer::serializeEntriesToJson(const std::vector<HvlovEntry>& entries) const
