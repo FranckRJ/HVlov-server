@@ -28,33 +28,45 @@ namespace hvlov
 
     HvlovEntry HvlovEntryBuilder::fileInfoToHvlovEntry(const FileInfo& fileInfo) const
     {
-        HvlovEntry::Type hvlovEntryType = extractHvlovEntryType(fileInfo);
-        std::string hvlovEntryTitle = extractHvlovEntryTitle(fileInfo, hvlovEntryType);
-        Url hvlovEntryUrl = extractHvlovEntryUrl(fileInfo, hvlovEntryType);
+        EntryType entryType = extractHvlovEntryType(fileInfo);
+        std::string entryTitle = extractHvlovEntryTitle(fileInfo, entryType);
+        Url entryUrl = extractHvlovEntryUrl(fileInfo, entryType);
 
-        return HvlovEntry{hvlovEntryType, hvlovEntryTitle, hvlovEntryUrl};
-    }
-
-    HvlovEntry::Type HvlovEntryBuilder::extractHvlovEntryType(const FileInfo& fileInfo) const
-    {
-        return (fileInfo.status.type() == std::filesystem::file_type::directory ? HvlovEntry::Type::Folder
-                                                                                : HvlovEntry::Type::Video);
-    }
-
-    std::string HvlovEntryBuilder::extractHvlovEntryTitle(const FileInfo& fileInfo,
-                                                          HvlovEntry::Type hvlovEntryType) const
-    {
-        std::string hvlovEntryTitle = fileInfo.path.filename().string();
-
-        if (hvlovEntryType == HvlovEntry::Type::Folder)
+        switch (entryType)
         {
-            std::ranges::replace(hvlovEntryTitle, '_', ' ');
+            case EntryType::Folder:
+            {
+                return entries::Folder{entryTitle, entryUrl};
+            }
+            case EntryType::Video:
+            {
+                return entries::Video{entryTitle, entryUrl};
+            }
+            default:
+            {
+                throw std::runtime_error{"Wrong entry type."};
+            }
+        }
+    }
+
+    HvlovEntryBuilder::EntryType HvlovEntryBuilder::extractHvlovEntryType(const FileInfo& fileInfo) const
+    {
+        return (fileInfo.status.type() == std::filesystem::file_type::directory ? EntryType::Folder : EntryType::Video);
+    }
+
+    std::string HvlovEntryBuilder::extractHvlovEntryTitle(const FileInfo& fileInfo, EntryType entryType) const
+    {
+        std::string entryTitle = fileInfo.path.filename().string();
+
+        if (entryType == EntryType::Folder)
+        {
+            std::ranges::replace(entryTitle, '_', ' ');
         }
 
-        return hvlovEntryTitle;
+        return entryTitle;
     }
 
-    Url HvlovEntryBuilder::extractHvlovEntryUrl(const FileInfo& fileInfo, HvlovEntry::Type hvlovEntryType) const
+    Url HvlovEntryBuilder::extractHvlovEntryUrl(const FileInfo& fileInfo, EntryType entryType) const
     {
         auto [filePathMismatch, rootPathMismatch] = std::ranges::mismatch(fileInfo.path, _config.serverRoot);
 
@@ -66,7 +78,7 @@ namespace hvlov
         std::filesystem::path entryPath =
             std::accumulate(filePathMismatch, fileInfo.path.end(), std::filesystem::path{}, std::divides{});
 
-        if (hvlovEntryType == HvlovEntry::Type::Video && !_config.serverVideosPrefix.empty())
+        if (entryType == EntryType::Video && !_config.serverVideosPrefix.empty())
         {
             entryPath = _config.serverVideosPrefix / entryPath;
         }

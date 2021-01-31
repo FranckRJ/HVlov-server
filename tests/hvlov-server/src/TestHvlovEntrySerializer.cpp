@@ -25,7 +25,7 @@ SCENARIO("HvlovEntrySerializer::serializeEntryToJson()", "[unit]")
 
         WHEN("A video entry is serialized to JSON")
         {
-            HvlovEntry videoEntry{HvlovEntry::Type::Video, file1, Url{urlToFile1}};
+            HvlovEntry videoEntry{entries::Video{file1, Url{urlToFile1}}};
 
             THEN("The returned string is the JSON representation of the video entry")
             {
@@ -37,7 +37,7 @@ SCENARIO("HvlovEntrySerializer::serializeEntryToJson()", "[unit]")
 
         WHEN("A folder entry is serialized to JSON")
         {
-            HvlovEntry folderEntry{HvlovEntry::Type::Folder, directory1, Url{urlToDirectory1}};
+            HvlovEntry folderEntry{entries::Folder{directory1, Url{urlToDirectory1}}};
 
             THEN("The returned string is the JSON representation of the folder entry")
             {
@@ -57,11 +57,10 @@ SCENARIO("HvlovEntrySerializer::serializeEntriesToJson()", "[unit]")
 
         WHEN("Several video / folder entries are serialized to JSON")
         {
-            std::vector<HvlovEntry> hvlovEntries{
-                HvlovEntry{HvlovEntry::Type::Video, file1, Url{urlToFile1}},
-                HvlovEntry{HvlovEntry::Type::Folder, directory1, Url{urlToDirectory1}},
-                HvlovEntry{HvlovEntry::Type::Video, file2, Url{urlToFile2}},
-                HvlovEntry{HvlovEntry::Type::Folder, directory2, Url{urlToDirectory2}}};
+            std::vector<HvlovEntry> hvlovEntries{HvlovEntry{entries::Video{file1, Url{urlToFile1}}},
+                                                 HvlovEntry{entries::Folder{directory1, Url{urlToDirectory1}}},
+                                                 HvlovEntry{entries::Video{file2, Url{urlToFile2}}},
+                                                 HvlovEntry{entries::Folder{directory2, Url{urlToDirectory2}}}};
 
             THEN("The returned string is the JSON representation of each entries")
             {

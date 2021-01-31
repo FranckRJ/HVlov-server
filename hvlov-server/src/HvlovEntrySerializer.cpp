@@ -11,13 +11,8 @@ namespace hvlov
 {
     std::string HvlovEntrySerializer::serializeEntryToJson(const HvlovEntry& entry) const
     {
-        nlohmann::json jsonEntry;
-
-        jsonEntry["type"] = entry.type == HvlovEntry::Type::Folder ? "folder" : "video";
-        jsonEntry["url"] = entry.url.toString();
-        jsonEntry["title"] = entry.title;
-
-        return jsonEntry.dump();
+        return std::visit([this](const auto& genericEntry) { return serializeEntryToJsonInternal(genericEntry); },
+                          entry);
     }
 
     std::string HvlovEntrySerializer::serializeEntriesToJson(const std::vector<HvlovEntry>& entries) const
@@ -38,5 +33,27 @@ namespace hvlov
         std::string joinedSerializedEntries(entriesJoiner.begin(), entriesJoiner.end());
 
         return joinedSerializedEntries;
+    }
+
+    std::string HvlovEntrySerializer::serializeEntryToJsonInternal(const entries::Folder& entry) const
+    {
+        nlohmann::json jsonEntry;
+
+        jsonEntry["type"] = "folder";
+        jsonEntry["url"] = entry.url.toString();
+        jsonEntry["title"] = entry.title;
+
+        return jsonEntry.dump();
+    }
+
+    std::string HvlovEntrySerializer::serializeEntryToJsonInternal(const entries::Video& entry) const
+    {
+        nlohmann::json jsonEntry;
+
+        jsonEntry["type"] = "video";
+        jsonEntry["url"] = entry.url.toString();
+        jsonEntry["title"] = entry.title;
+
+        return jsonEntry.dump();
     }
 } // namespace hvlov

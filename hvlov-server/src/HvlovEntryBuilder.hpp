@@ -33,6 +33,16 @@ namespace hvlov
         std::vector<HvlovEntry> buildEntriesFromFileInfos(const std::vector<FileInfo>& fileInfos) const override;
 
     private:
+        /*
+         * Type of an HvlovEntry, only used during parsing.
+         */
+        enum class EntryType
+        {
+            Folder,
+            Video
+        };
+
+    private:
         /*!
          * Create an HvlovEntry from a FileInfo, relatively to the server root.
          *
@@ -47,27 +57,27 @@ namespace hvlov
          * @param fileInfo The FileInfo used to extract the Type information.
          * @return The extracted Type information.
          */
-        HvlovEntry::Type extractHvlovEntryType(const FileInfo& fileInfo) const;
+        EntryType extractHvlovEntryType(const FileInfo& fileInfo) const;
 
         /*!
          * Extract the HvlovEntry Title information from the parameters.
          * Apply some modification depending of the entry type to have more readable name.
          *
          * @param fileInfo The FileInfo used to extract the Title information.
-         * @param hvlovEntryType The entry type used to chose which modification to do on the title.
+         * @param entryType The entry type used to chose which modification to do on the title.
          * @return The extracted Title information.
          */
-        std::string extractHvlovEntryTitle(const FileInfo& fileInfo, HvlovEntry::Type hvlovEntryType) const;
+        std::string extractHvlovEntryTitle(const FileInfo& fileInfo, EntryType entryType) const;
 
         /*!
          * Extract the HvlovEntry URL from the parameter. It will be relative to the server root or base
          * depending on the type of entry.
          *
          * @param fileInfo The FileInfo used to extract the Url information.
-         * @param hvlovEntryType The entry type used to chose which modification to do on the title.
+         * @param entryType The entry type used to chose which modification to do on the url.
          * @return The extracted Url information.
          */
-        Url extractHvlovEntryUrl(const FileInfo& fileInfo, HvlovEntry::Type hvlovEntryType) const;
+        Url extractHvlovEntryUrl(const FileInfo& fileInfo, EntryType entryType) const;
 
     private:
         //! The configuration of the HvlovEntryBuilder.
