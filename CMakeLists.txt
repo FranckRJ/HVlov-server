@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 project(HVlov-server VERSION 0.2 LANGUAGES CXX)
 
 # Set C++ standard requirements
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -20,7 +20,7 @@ add_library(project_warnings INTERFACE)
 include(cmake/FixCompilerSpecificStuff.cmake)
 
 # Setup base compiler options
-target_compile_features(project_global_options INTERFACE cxx_std_20)
+target_compile_features(project_global_options INTERFACE cxx_std_17)
 target_link_libraries(project_exe_options INTERFACE project_global_options)
 target_link_libraries(project_test_options INTERFACE project_global_options)
 

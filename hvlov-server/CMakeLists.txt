@@ -28,6 +28,7 @@ configure_file(generated/Globals.hpp.in generated/Globals.hpp)
 
 target_link_libraries(lib-hvlov-server PRIVATE
         project_exe_options project_warnings
+        CONAN_PKG::range-v3
         CONAN_PKG::fmt
         CONAN_PKG::spdlog
         CONAN_PKG::nlohmann_json

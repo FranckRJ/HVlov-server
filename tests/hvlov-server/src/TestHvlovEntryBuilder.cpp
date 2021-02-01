@@ -40,7 +40,7 @@ SCENARIO("HvlovEntryBuilder::buildEntriesFromFileInfos()", "[unit]")
 {
     GIVEN("A constructed HvlovEntryBuilder with a valid configuration")
     {
-        HvlovEntryBuilder::Config config{.serverRoot = serverRoot, .serverVideosPrefix = serverVideosPrefix};
+        HvlovEntryBuilder::Config config{serverRoot, serverVideosPrefix};
         HvlovEntryBuilder hvlovEntryBuilder{config};
 
         WHEN("A valid FileInfo for a video entry is passed as argument")

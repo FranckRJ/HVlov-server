@@ -1,6 +1,5 @@
 #pragma once
 
-#include <compare>
 #include <string>
 
 namespace hvlov
@@ -25,11 +24,24 @@ namespace hvlov
          */
         [[nodiscard]] std::string toString() const;
 
-        //! lhs <=> rhs operation.
-        std::strong_ordering operator<=>(const Url& other) const = default;
-
     private:
         //! The underlying string that store the URL.
         std::string _url;
+
+    private:
+        friend bool operator<(const Url& lhs, const Url& rhs)
+        {
+            return lhs._url < rhs._url;
+        }
+
+        friend bool operator==(const Url& lhs, const Url& rhs)
+        {
+            return lhs._url == rhs._url;
+        }
+
+        friend bool operator!=(const Url& lhs, const Url& rhs)
+        {
+            return lhs._url != rhs._url;
+        }
     };
 } // namespace hvlov

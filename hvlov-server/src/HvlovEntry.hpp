@@ -1,7 +1,7 @@
 #pragma once
 
-#include <compare>
 #include <string>
+#include <tuple>
 #include <variant>
 
 #include "Url.hpp"
@@ -20,8 +20,21 @@ namespace hvlov
             //! The URL used to access the folder, relative to the root of the server.
             Url url;
 
-            //! lhs <=> rhs operation.
-            std::strong_ordering operator<=>(const Folder& other) const = default;
+        private:
+            friend bool operator<(const Folder& lhs, const Folder& rhs)
+            {
+                return std::tie(lhs.title, lhs.url) < std::tie(rhs.title, rhs.url);
+            }
+
+            friend bool operator==(const Folder& lhs, const Folder& rhs)
+            {
+                return std::tie(lhs.title, lhs.url) == std::tie(rhs.title, rhs.url);
+            }
+
+            friend bool operator!=(const Folder& lhs, const Folder& rhs)
+            {
+                return std::tie(lhs.title, lhs.url) != std::tie(rhs.title, rhs.url);
+            }
         };
 
         /*!
@@ -34,8 +47,21 @@ namespace hvlov
             //! The URL used to access the video, relative to the root of the server.
             Url url;
 
-            //! lhs <=> rhs operation.
-            std::strong_ordering operator<=>(const Video& other) const = default;
+        private:
+            friend bool operator<(const Video& lhs, const Video& rhs)
+            {
+                return std::tie(lhs.title, lhs.url) < std::tie(rhs.title, rhs.url);
+            }
+
+            friend bool operator==(const Video& lhs, const Video& rhs)
+            {
+                return std::tie(lhs.title, lhs.url) == std::tie(rhs.title, rhs.url);
+            }
+
+            friend bool operator!=(const Video& lhs, const Video& rhs)
+            {
+                return std::tie(lhs.title, lhs.url) != std::tie(rhs.title, rhs.url);
+            }
         };
     } // namespace entries
 

@@ -5,6 +5,7 @@
 #include <utility>
 
 #include <fmt/core.h>
+#include <range/v3/all.hpp>
 #include <spdlog/spdlog.h>
 
 namespace hvlov
@@ -94,7 +95,7 @@ namespace hvlov
             return HttpResponse{HttpResponse::Status::BadRequest, errorMessage};
         }
 
-        if (std::ranges::any_of(path, [](const auto& subPath) { return subPath == ".." || subPath == "."; }))
+        if (ranges::any_of(path, [](const auto& subPath) { return subPath == ".." || subPath == "."; }))
         {
             std::string errorMessage =
                 fmt::format("Error: path '{}' contains dot or dot-dot file, which is invalid.", path.generic_string());

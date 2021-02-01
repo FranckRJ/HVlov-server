@@ -1,11 +1,11 @@
 #include "HvlovEntryBuilder.hpp"
 
-#include <algorithm>
 #include <functional>
-#include <iterator>
 #include <numeric>
 #include <stdexcept>
 #include <utility>
+
+#include <range/v3/all.hpp>
 
 namespace hvlov
 {
@@ -15,13 +15,12 @@ namespace hvlov
 
     std::vector<HvlovEntry> HvlovEntryBuilder::buildEntriesFromFileInfos(const std::vector<FileInfo>& fileInfos) const
     {
-        std::vector<HvlovEntry> hvlovEntries;
+        std::vector<HvlovEntry> hvlovEntries =
+            fileInfos |
+            ranges::views::transform([this](const auto& fileInfo) { return fileInfoToHvlovEntry(fileInfo); }) |
+            ranges::to_vector;
 
-        hvlovEntries.reserve(fileInfos.size());
-        std::ranges::transform(fileInfos, std::back_inserter(hvlovEntries),
-                               [this](const auto& p) { return fileInfoToHvlovEntry(p); });
-
-        std::ranges::sort(hvlovEntries);
+        ranges::sort(hvlovEntries);
 
         return hvlovEntries;
     }
@@ -60,7 +59,7 @@ namespace hvlov
 
         if (entryType == EntryType::Folder)
         {
-            std::ranges::replace(entryTitle, '_', ' ');
+            ranges::replace(entryTitle, '_', ' ');
         }
 
         return entryTitle;
@@ -68,7 +67,7 @@ namespace hvlov
 
     Url HvlovEntryBuilder::extractHvlovEntryUrl(const FileInfo& fileInfo, EntryType entryType) const
     {
-        auto [filePathMismatch, rootPathMismatch] = std::ranges::mismatch(fileInfo.path, _config.serverRoot);
+        auto [filePathMismatch, rootPathMismatch] = ranges::mismatch(fileInfo.path, _config.serverRoot);
 
         if (rootPathMismatch != _config.serverRoot.end() || filePathMismatch == fileInfo.path.end())
         {
