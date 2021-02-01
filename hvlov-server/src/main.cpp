@@ -42,16 +42,14 @@ int main(int argc, char** argv)
     constexpr int serverPort = 47107;
 
     std::unique_ptr<hvlov::IFileSystemLister> fileSystemLister = std::make_unique<hvlov::FileSystemLister>();
-    hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{.serverRoot = serverRoot,
-                                                             .serverVideosPrefix = serverVideosPrefix};
+    hvlov::HvlovEntryBuilder::Config hvlovEntryBuilderConfig{serverRoot, serverVideosPrefix};
     std::unique_ptr<hvlov::IHvlovEntryBuilder> hvlovEntryBuilder =
         std::make_unique<hvlov::HvlovEntryBuilder>(hvlovEntryBuilderConfig);
     std::unique_ptr<hvlov::IHvlovEntrySerializer> hvlovEntrySerializer =
         std::make_unique<hvlov::HvlovEntrySerializer>();
     std::unique_ptr<hvlov::IHttpServerWrapper> httpServerWrapper = std::make_unique<hvlov::HttpServerWrapper>();
 
-    hvlov::HvlovServer::Config hvlovServerConfig{
-        .root = serverRoot, .videosUrlPrefix = serverVideosPrefix, .connectionInfo = {serverAddress, serverPort}};
+    hvlov::HvlovServer::Config hvlovServerConfig{serverRoot, serverVideosPrefix, {serverAddress, serverPort}};
     std::unique_ptr<hvlov::IHvlovServer> hvlovServer = std::make_unique<hvlov::HvlovServer>(
         hvlovServerConfig, std::move(httpServerWrapper), std::move(hvlovEntrySerializer), std::move(hvlovEntryBuilder),
         std::move(fileSystemLister));
