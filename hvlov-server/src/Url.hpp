@@ -29,16 +29,19 @@ namespace hvlov
         std::string _url;
 
     private:
+        //! lhs < rhs operation
         friend bool operator<(const Url& lhs, const Url& rhs)
         {
             return lhs._url < rhs._url;
         }
 
+        //! lhs == rhs operation
         friend bool operator==(const Url& lhs, const Url& rhs)
         {
             return lhs._url == rhs._url;
         }
 
+        //! lhs != rhs operation
         friend bool operator!=(const Url& lhs, const Url& rhs)
         {
             return lhs._url != rhs._url;

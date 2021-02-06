@@ -21,16 +21,19 @@ namespace hvlov
             Url url;
 
         private:
+            //! lhs < rhs operation
             friend bool operator<(const Folder& lhs, const Folder& rhs)
             {
                 return std::tie(lhs.title, lhs.url) < std::tie(rhs.title, rhs.url);
             }
 
+            //! lhs == rhs operation
             friend bool operator==(const Folder& lhs, const Folder& rhs)
             {
                 return std::tie(lhs.title, lhs.url) == std::tie(rhs.title, rhs.url);
             }
 
+            //! lhs != rhs operation
             friend bool operator!=(const Folder& lhs, const Folder& rhs)
             {
                 return std::tie(lhs.title, lhs.url) != std::tie(rhs.title, rhs.url);
@@ -48,16 +51,19 @@ namespace hvlov
             Url url;
 
         private:
+            //! lhs < rhs operation
             friend bool operator<(const Video& lhs, const Video& rhs)
             {
                 return std::tie(lhs.title, lhs.url) < std::tie(rhs.title, rhs.url);
             }
 
+            //! lhs == rhs operation
             friend bool operator==(const Video& lhs, const Video& rhs)
             {
                 return std::tie(lhs.title, lhs.url) == std::tie(rhs.title, rhs.url);
             }
 
+            //! lhs != rhs operation
             friend bool operator!=(const Video& lhs, const Video& rhs)
             {
                 return std::tie(lhs.title, lhs.url) != std::tie(rhs.title, rhs.url);
