@@ -10,15 +10,14 @@
 namespace hvlov
 {
     HvlovEntryBuilder::HvlovEntryBuilder(HvlovEntryBuilder::Config config) : _config{std::move(config)}
-    {
-    }
+    {}
 
     std::vector<HvlovEntry> HvlovEntryBuilder::buildEntriesFromFileInfos(const std::vector<FileInfo>& fileInfos) const
     {
         std::vector<HvlovEntry> hvlovEntries =
-            fileInfos |
-            ranges::views::transform([this](const auto& fileInfo) { return fileInfoToHvlovEntry(fileInfo); }) |
-            ranges::to_vector;
+            fileInfos
+            | ranges::views::transform([this](const auto& fileInfo) { return fileInfoToHvlovEntry(fileInfo); })
+            | ranges::to_vector;
 
         ranges::sort(hvlovEntries);
 

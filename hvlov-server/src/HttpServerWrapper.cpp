@@ -20,18 +20,19 @@ namespace hvlov
     }
 
     HttpServerWrapper::HttpServerWrapper() : _pimpl{new HttpServerWrapper::PrivateImpl}
-    {
-    }
+    {}
 
     IHttpServerWrapper& HttpServerWrapper::registerGet(const std::string& pattern, const RequestHandler& handler)
     {
-        _pimpl->server.Get(pattern.c_str(), [handler](const httplib::Request& libReq, httplib::Response& libRes) {
-            HttpRequest request{libReq.params};
-            HttpResponse response = handler(request);
+        _pimpl->server.Get(pattern.c_str(),
+                           [handler](const httplib::Request& libReq, httplib::Response& libRes)
+                           {
+                               HttpRequest request{libReq.params};
+                               HttpResponse response = handler(request);
 
-            libRes.status = static_cast<int>(response.status);
-            libRes.set_content(response.body, "text/plain");
-        });
+                               libRes.status = static_cast<int>(response.status);
+                               libRes.set_content(response.body, "text/plain");
+                           });
 
         return *this;
     }

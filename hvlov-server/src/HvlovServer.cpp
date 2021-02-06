@@ -38,16 +38,18 @@ namespace hvlov
 
     void HvlovServer::initializeRequestHandlers()
     {
-        _serverWrapper->registerGet("/", [this](const HttpRequest& req) {
-            std::string pathParam;
+        _serverWrapper->registerGet("/",
+                                    [this](const HttpRequest& req)
+                                    {
+                                        std::string pathParam;
 
-            if (auto pathIte = req.params.find("path"); pathIte != req.params.end())
-            {
-                pathParam = pathIte->second;
-            }
+                                        if (auto pathIte = req.params.find("path"); pathIte != req.params.end())
+                                        {
+                                            pathParam = pathIte->second;
+                                        }
 
-            return handleListRequest(pathParam);
-        });
+                                        return handleListRequest(pathParam);
+                                    });
     }
 
     HttpResponse HvlovServer::handleListRequest(std::string_view pathParam)

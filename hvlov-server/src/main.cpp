@@ -33,7 +33,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto removeTrailingSlash = [](const std::filesystem::path& path) {
+    auto removeTrailingSlash = [](const std::filesystem::path& path)
+    {
         return path.has_filename() ? path : path.parent_path();
     };
     const std::filesystem::path serverRoot = removeTrailingSlash(argv[1]);
