@@ -5,10 +5,14 @@
 namespace hvlov
 {
     Url::Url(std::string url) : _url{std::move(url)}
+    {}
+
+    std::string Url::toString() const
     {
+        return _url;
     }
 
-    [[nodiscard]] std::string Url::toString() const
+    std::filesystem::path Url::toPath() const
     {
         return _url;
     }

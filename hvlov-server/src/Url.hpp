@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <string>
 
 namespace hvlov
@@ -22,7 +23,14 @@ namespace hvlov
          *
          * @return a string representation of the URL.
          */
-        [[nodiscard]] std::string toString() const;
+        std::string toString() const;
+
+        /*!
+         * Return a path representation of the URL.
+         *
+         * @return the path representation of the URL.
+         */
+        std::filesystem::path toPath() const;
 
     private:
         //! The underlying string that store the URL.

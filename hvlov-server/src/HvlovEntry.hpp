@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include <tuple>
 #include <variant>
@@ -69,7 +70,38 @@ namespace hvlov
                 return std::tie(lhs.title, lhs.url) != std::tie(rhs.title, rhs.url);
             }
         };
+
+        /*!
+         * Struct containing information about a group of videos on an HVlov server.
+         * A group of videos is several videos for the same movie, often just different qualities.
+         */
+        struct VideoGroup
+        {
+            //! The title of the video group, that can be displayed to the user.
+            std::string title;
+            //! A map that will map a tag to a particular URL of a video in the video group.
+            std::map<std::string, Url> urls;
+
+        private:
+            //! lhs < rhs operation
+            friend bool operator<(const VideoGroup& lhs, const VideoGroup& rhs)
+            {
+                return std::tie(lhs.title, lhs.urls) < std::tie(rhs.title, rhs.urls);
+            }
+
+            //! lhs == rhs operation
+            friend bool operator==(const VideoGroup& lhs, const VideoGroup& rhs)
+            {
+                return std::tie(lhs.title, lhs.urls) == std::tie(rhs.title, rhs.urls);
+            }
+
+            //! lhs != rhs operation
+            friend bool operator!=(const VideoGroup& lhs, const VideoGroup& rhs)
+            {
+                return std::tie(lhs.title, lhs.urls) != std::tie(rhs.title, rhs.urls);
+            }
+        };
     } // namespace entries
 
-    using HvlovEntry = std::variant<entries::Folder, entries::Video>;
+    using HvlovEntry = std::variant<entries::Folder, entries::Video, entries::VideoGroup>;
 } // namespace hvlov
