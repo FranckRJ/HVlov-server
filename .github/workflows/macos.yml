@@ -19,7 +19,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install conan
-          pip3 show conan
+          echo "/usr/local/lib/python3.9/site-packages" >> $GITHUB_PATH
       - name: Generate build files
         run: |
           mkdir build
