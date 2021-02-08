@@ -14,5 +14,5 @@ Testé sur :
 - Linux (Ubuntu 20.04) :
   - GCC 10
   - Clang 10
-- MacOs (11.0) :
+- MacOs (10.15) :
   - Apple Clang 12
