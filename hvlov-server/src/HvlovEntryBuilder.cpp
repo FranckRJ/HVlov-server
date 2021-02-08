@@ -177,7 +177,8 @@ namespace hvlov
         {
             videoGroupEntry.urls[compatiblesIndexedVideoElemInfo.second.tag] =
                 compatiblesIndexedVideoElemInfo.second.url;
-            hvlovEntries.erase(std::next(hvlovEntries.begin(), compatiblesIndexedVideoElemInfo.first));
+            hvlovEntries.erase(
+                std::next(hvlovEntries.begin(), static_cast<std::ptrdiff_t>(compatiblesIndexedVideoElemInfo.first)));
         }
 
         hvlovEntries[index] = std::move(videoGroupEntry);
