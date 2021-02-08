@@ -11,7 +11,28 @@ defaults:
     shell: bash
 
 jobs:
-  msys2-mingw64-gcc-10:
+  msvc-19-2:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Conan
+        run: |
+          python -m pip install --upgrade pip
+          pip install conan
+      - name: Generate build files
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug
+      - name: Build project
+        run: |
+          cd build
+          cmake --build . --config Debug
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure --build-config Debug
+  gcc-10:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
@@ -26,7 +47,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON
+          cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Debug
       - name: Build project
         run: |
           cd build

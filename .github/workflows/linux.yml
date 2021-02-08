@@ -18,10 +18,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install g++-10
-        run: |
-          sudo apt-get -y update
-          sudo apt-get -y install g++-10
       - name: Install Conan
         run: |
           python3 -m pip install --upgrade pip
@@ -43,3 +39,25 @@ jobs:
       - name: Upload coverage to Codecov
         run: |
           bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+  clang-10:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Conan
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install conan
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Generate build files
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DENABLE_SANITIZER_ADDRESS=ON -DENABLE_SANITIZER_UNDEFINED_BEHAVIOR=ON
+      - name: Build project
+        run: |
+          cd build
+          cmake --build . --config Debug
+      - name: Run tests
+        run: |
+          cd build
+          ctest --output-on-failure --build-config Debug
