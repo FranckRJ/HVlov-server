@@ -28,9 +28,11 @@ target_link_libraries(project_test_options INTERFACE project_global_options)
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
-# sanitizer options if supported by compiler
+# sanitizer / coverage options if supported by compiler
 include(cmake/Sanitizers.cmake)
-enable_sanitizers(project_exe_options)
+enable_sanitizers(project_global_options)
+include(cmake/Coverage.cmake)
+enable_coverage(project_exe_options)
 
 # allow for static analysis options
 include(cmake/StaticAnalyzers.cmake)
