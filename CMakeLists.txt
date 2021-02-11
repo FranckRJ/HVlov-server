@@ -46,7 +46,6 @@ option(ENABLE_TESTING "Enable Test Builds" ON)
 if (ENABLE_TESTING)
     enable_testing()
     message(STATUS "Building Tests.")
-    add_subdirectory(tests)
 endif ()
 
 add_subdirectory(hvlov-server)
