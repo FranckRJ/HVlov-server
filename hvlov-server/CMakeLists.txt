@@ -1,5 +1,5 @@
 add_subdirectory(config)
-add_subdirectory(exe-hvlov-server)
 add_subdirectory(hvlov-entries)
+add_subdirectory(hvlov-server)
 add_subdirectory(lib-hvlov-server)
 add_subdirectory(utils)
